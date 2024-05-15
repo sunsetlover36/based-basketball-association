@@ -1,22 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { Button, Modal } from './components';
 
 export const App = () => {
-  const videoRef = useRef(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-
-    if (video) {
-      setTimeout(() => {
-        video.play().catch((error) => {
-          console.log('Autoplay was prevented:', error);
-        });
-      }, 100);
-    }
-  }, []);
 
   return (
     <>
@@ -28,9 +15,6 @@ export const App = () => {
               autoPlay
               loop
               muted
-              controls={false}
-              disablePictureInPicture
-              controlsList="nodownload nofullscreen noremoteplayback"
               className="w-40 md:w-auto mx-auto mb-2"
             >
               <source src="/player.mp4" type="video/mp4" />
