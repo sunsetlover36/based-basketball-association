@@ -10,9 +10,11 @@ export const App = () => {
     const video = videoRef.current;
 
     if (video) {
-      video.play().catch((error) => {
-        console.log('Autoplay was prevented:', error);
-      });
+      setTimeout(() => {
+        video.play().catch((error) => {
+          console.log('Autoplay was prevented:', error);
+        });
+      }, 100);
     }
   }, []);
 
