@@ -9,7 +9,7 @@ export const App = () => {
     'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] 2xl:w-[50%] mx-auto mt-2 !leading-5';
   return (
     <>
-      <div className="w-full nh:h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-8 nh:p-0 sm:items-center justify-center relative">
+      <div className="w-full nh:h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-8 nh:p-0 md:items-center justify-center relative">
         <div>
           <div className="text-center uppercase">
             <video
@@ -62,7 +62,7 @@ export const App = () => {
           </div>
         </div>
 
-        <footer className="flex items-center justify-center mt-4 md:mt-8 nh:mt-0 nh:absolute w-full bottom-8">
+        <footer className="flex items-center justify-center mt-4 md:mt-8 w-full">
           <h2 className="text-center text-lg sm:text-xl md:text-2xl uppercase">
             Exclusively on <span className="text-blue-600">Base</span> soon!
           </h2>
