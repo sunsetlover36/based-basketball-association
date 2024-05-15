@@ -55,7 +55,7 @@ export const App = () => {
         </div>
 
         <footer className="flex items-center justify-center mt-8 nh:mt-0 nh:absolute w-full bottom-8">
-          <h2 className="text-center text-2xl uppercase">
+          <h2 className="text-center text-lg sm:text-xl md:text-2xl uppercase">
             Exclusively on <span className="text-blue-600">Base</span> soon!
           </h2>
         </footer>
