@@ -1,9 +1,20 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { Button, Modal } from './components';
 
 export const App = () => {
+  const videoRef = useRef(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (video) {
+      video.play().catch((error) => {
+        console.log('Autoplay was prevented:', error);
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -11,6 +22,7 @@ export const App = () => {
         <div>
           <div className="text-center uppercase">
             <video
+              ref={videoRef}
               autoPlay
               loop
               muted
