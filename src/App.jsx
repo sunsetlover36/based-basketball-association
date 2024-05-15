@@ -6,7 +6,7 @@ export const App = () => {
   const [showTeamModal, setShowTeamModal] = useState(false);
 
   const paragraphClassName =
-    'text-sm sm:text-base lg:text-lg xl:text-xl w-[90%] sm:w-[75%] 2xl:w-[50%] mx-auto mt-2';
+    'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] 2xl:w-[50%] mx-auto mt-2';
   return (
     <>
       <div className="w-full nh:h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-8 nh:p-0 sm:items-center justify-center relative">
@@ -23,7 +23,7 @@ export const App = () => {
             >
               <source src="/player.mp4" type="video/mp4" />
             </video>
-            <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl text-blue-600">
+            <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl 2xl:text-6xl text-blue-600">
               Based Basketball Association
             </h1>
             <p className={paragraphClassName}>
