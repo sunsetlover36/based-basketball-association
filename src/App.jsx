@@ -7,16 +7,16 @@ export const App = () => {
 
   return (
     <>
-      <div className="w-full nh:h-screen border-[2rem] border-blue-600 flex flex-col p-8 nh:p-0 sm:items-center justify-center relative">
+      <div className="w-full nh:h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-8 nh:p-0 sm:items-center justify-center relative">
         <div>
           <div className="text-center uppercase">
             <video autoPlay loop muted className="w-40 md:w-auto mx-auto mb-2">
               <source src="/player.mp4" type="video/mp4" />
             </video>
-            <h1 className="px-8 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-blue-600">
+            <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-blue-600">
               Based Basketball Association
             </h1>
-            <p className="text-sm sm:text-base lg:text-lg xl:text-xl w-[75%] 2xl:w-[50%] mx-auto mt-2">
+            <p className="text-sm sm:text-base lg:text-lg xl:text-xl w-[90%] sm:w-[75%] 2xl:w-[50%] mx-auto mt-2">
               Based Basketball Association is a basketball coach career
               simulator.
               <br />
