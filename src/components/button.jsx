@@ -10,7 +10,7 @@ export const Button = ({
     <button
       onClick={onClick}
       className={cn(
-        'text-lg focus:outline-none',
+        'text-base md:text-lg focus:outline-none',
         variant === 'primary' &&
           'border-2 border-blue-600 text-blue-600 px-4 py-1 hover:bg-blue-600 hover:text-white',
         variant === 'ghost' &&

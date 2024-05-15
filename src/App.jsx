@@ -19,7 +19,7 @@ export const App = () => {
               controls={false}
               disablePictureInPicture
               controlsList="nodownload nofullscreen noremoteplayback"
-              className="w-40 md:w-60 xl:w-auto mx-auto mb-2"
+              className="w-32 sm:w-40 md:w-60 2xl:w-auto mx-auto mb-2"
             >
               <source src="/player.mp4" type="video/mp4" />
             </video>
