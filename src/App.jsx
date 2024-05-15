@@ -5,6 +5,8 @@ import { Button, Modal } from './components';
 export const App = () => {
   const [showTeamModal, setShowTeamModal] = useState(false);
 
+  const paragraphClassName =
+    'text-sm sm:text-base lg:text-lg xl:text-xl w-[90%] sm:w-[75%] 2xl:w-[50%] mx-auto mt-2';
   return (
     <>
       <div className="w-full nh:h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-8 nh:p-0 sm:items-center justify-center relative">
@@ -17,32 +19,30 @@ export const App = () => {
               controls={false}
               disablePictureInPicture
               controlsList="nodownload nofullscreen noremoteplayback"
-              className="w-40 md:w-auto mx-auto mb-2"
+              className="w-40 md:w-60 xl:w-auto mx-auto mb-2"
             >
               <source src="/player.mp4" type="video/mp4" />
             </video>
             <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-blue-600">
               Based Basketball Association
             </h1>
-            <p className="text-sm sm:text-base lg:text-lg xl:text-xl w-[90%] sm:w-[75%] 2xl:w-[50%] mx-auto mt-2">
+            <p className={paragraphClassName}>
               Based Basketball Association is a basketball coach career
               simulator.
-              <br />
-              <br />
+            </p>
+            <p className={paragraphClassName}>
               Build your dream team, starting from your hood, to&nbsp;dominate
               the street courts and then take over the whole basketball world.
-              <br />
-              <br />
-              Each player will receive <span className="text-blue-600">
-                1
-              </span>{' '}
+            </p>
+            <p className={paragraphClassName}>
+              Each player will receive <span className="text-blue-600">1</span>{' '}
               random pack out of&nbsp;
               <span className="text-blue-600">3333</span>, containing{' '}
               <span className="text-blue-600">3</span>&nbsp;basketball
               enthusiasts from your hood, whom you&rsquo;ll gather for the
               upcoming games.
-              <br />
-              <br />
+            </p>
+            <p className={paragraphClassName}>
               Lead your squad to&nbsp;the title of&nbsp;the best team
               in&nbsp;the world in&nbsp;the thrilling gameplay of&nbsp;Based
               Basketball.
