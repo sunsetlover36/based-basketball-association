@@ -19,7 +19,7 @@ export const App = () => {
               controls={false}
               disablePictureInPicture
               controlsList="nodownload nofullscreen noremoteplayback"
-              className="w-32 sm:w-40 md:w-60 2xl:w-auto mx-auto mb-2"
+              className="w-32 sm:w-40 md:w-48 2xl:w-auto mx-auto mb-2"
             >
               <source src="/player.mp4" type="video/mp4" />
             </video>
@@ -62,7 +62,7 @@ export const App = () => {
           </div>
         </div>
 
-        <footer className="flex items-center justify-center mt-8 nh:mt-0 nh:absolute w-full bottom-8">
+        <footer className="flex items-center justify-center mt-4 md:mt-8 nh:mt-0 nh:absolute w-full bottom-8">
           <h2 className="text-center text-lg sm:text-xl md:text-2xl uppercase">
             Exclusively on <span className="text-blue-600">Base</span> soon!
           </h2>

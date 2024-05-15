@@ -5,7 +5,7 @@ export default {
     extend: {
       screens: {
         nh: {
-          raw: '(min-height: 900px)',
+          raw: '(min-height: 676px),(min-width: 1024px)',
         },
       },
     },
