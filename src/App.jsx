@@ -23,7 +23,7 @@ export const App = () => {
             >
               <source src="/player.mp4" type="video/mp4" />
             </video>
-            <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-blue-600">
+            <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl text-blue-600">
               Based Basketball Association
             </h1>
             <p className={paragraphClassName}>
