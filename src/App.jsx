@@ -6,7 +6,7 @@ export const App = () => {
   const [showTeamModal, setShowTeamModal] = useState(false);
 
   const paragraphClassName =
-    'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] 2xl:w-[50%] mx-auto mt-2 !leading-5';
+    'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] lg:w-[60%] 2xl:w-[55%] mx-auto mt-2 !leading-5 2xl:!leading-7';
   return (
     <>
       <div className="w-full min-h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-4 md:p-8 items-center justify-center relative">
