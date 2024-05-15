@@ -10,13 +10,7 @@ export const App = () => {
       <div className="w-full nh:h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-8 nh:p-0 sm:items-center justify-center relative">
         <div>
           <div className="text-center uppercase">
-            <video
-              ref={videoRef}
-              autoPlay
-              loop
-              muted
-              className="w-40 md:w-auto mx-auto mb-2"
-            >
+            <video autoPlay loop muted className="w-40 md:w-auto mx-auto mb-2">
               <source src="/player.mp4" type="video/mp4" />
             </video>
             <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-blue-600">
