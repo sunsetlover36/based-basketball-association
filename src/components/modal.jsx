@@ -56,7 +56,7 @@ export const Modal = ({ showModal, setShowModal, title, children }) => {
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <Button
-              variant="ghost"
+              variant="muted"
               className="mt-3"
               onClick={() => setShowModal(false)}
             >
