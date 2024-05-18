@@ -13,8 +13,11 @@ export const Header = () => {
     return null;
   }
 
-  const wallet = wallets[0];
-  const isChainSupported = +wallet.chainId.split(':')[1] === baseSepolia.id;
+  let isChainSupported = false;
+  if (wallets && wallets.length > 0) {
+    const wallet = wallets[0];
+    isChainSupported = +wallet.chainId.split(':')[1] === baseSepolia.id;
+  }
 
   return (
     <header className="min-h-[10vh] px-4 md:px-8 flex items-center justify-end">
