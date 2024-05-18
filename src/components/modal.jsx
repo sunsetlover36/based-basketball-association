@@ -1,8 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { Button } from './button';
 import { useClickAway } from 'react-use';
 
-export const Modal = ({ showModal, setShowModal, title, children }) => {
+import { cn } from '@/lib/utils';
+import { Button } from './button';
+
+export const Modal = ({
+  showModal,
+  setShowModal,
+  title,
+  children,
+  className,
+}) => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -38,7 +46,10 @@ export const Modal = ({ showModal, setShowModal, title, children }) => {
         </span>
 
         <div
-          className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+          className={cn(
+            'inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full',
+            className
+          )}
           ref={ref}
         >
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">

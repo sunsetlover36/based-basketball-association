@@ -8,5 +8,13 @@ export const createUIStore = (set) => ({
         });
       },
     },
+    traitsDialog: {
+      isOpen: false,
+      toggle: (isOpen) => {
+        set((store) => {
+          store.dialogs.traitsDialog.isOpen = isOpen;
+        });
+      },
+    },
   },
 });
