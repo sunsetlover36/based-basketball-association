@@ -41,10 +41,6 @@ export const TraitsDialog = () => {
           opponents.
         </li>
         <li>
-          <strong>One-on-One Play</strong> - ability to&nbsp;beat or&nbsp;defend
-          against a&nbsp;single opponent.
-        </li>
-        <li>
           <strong>Strength</strong> - physical strength, important for battles
           under the basket.
         </li>
