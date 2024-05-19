@@ -102,7 +102,7 @@ export const Mint = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        {isMinted ? (
+        {isMinted || balance > 0n ? (
           <div>
             <p className="text-xl">Congratulations! What's next?</p>
           </div>
