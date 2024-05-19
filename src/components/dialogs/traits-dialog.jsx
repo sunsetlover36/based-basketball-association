@@ -67,8 +67,9 @@ export const TraitsDialog = () => {
           after missed shots.
         </li>
         <li>
-          <strong>Stamina</strong> - ability to&nbsp;maintain a&nbsp;high level
-          of&nbsp;energy throughout the game.
+          <strong>Stamina</strong> - indicates the player&rsquo;s fatigue.
+          If&nbsp;stamina drops to&nbsp;0, the player needs to&nbsp;rest before
+          he can continue playing.
         </li>
         <li>
           <strong>Injury</strong> - health status, can be&nbsp;either &laquo;Not
