@@ -1,8 +1,12 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 import { Root } from './Root';
 import { Main } from './Main';
 import { Mint } from './Mint';
+import { Burn } from './Burn';
+import { Team } from './Team';
+import { Matches } from './Matches';
+import { MatchRoom } from './MatchRoom';
 
 export const router = createBrowserRouter([
   {
@@ -11,12 +15,34 @@ export const router = createBrowserRouter([
     errorElement: <Root />,
     children: [
       {
-        path: '/',
+        index: true,
         element: <Main />,
       },
       {
-        path: '/mint',
+        path: 'mint',
         element: <Mint />,
+      },
+      {
+        path: 'burn',
+        element: <Burn />,
+      },
+      {
+        path: 'team',
+        element: <Team />,
+      },
+      {
+        path: 'matches',
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <Matches />,
+          },
+          {
+            path: ':matchId',
+            element: <MatchRoom />,
+          },
+        ],
       },
     ],
   },

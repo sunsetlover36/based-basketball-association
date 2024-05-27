@@ -6,18 +6,19 @@ import { Button } from './button';
 
 export const Modal = ({
   showModal,
-  setShowModal,
+  close,
   title,
   children,
   className,
   fixedButton = false,
+  buttons = null,
 }) => {
   const ref = useRef(null);
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        setShowModal(false);
+        close();
       }
     };
 
@@ -26,14 +27,21 @@ export const Modal = ({
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [setShowModal]);
+  }, [close]);
 
-  useClickAway(ref, () => setShowModal(false));
-
-  if (!showModal) return null;
+  useClickAway(ref, () => {
+    if (showModal) {
+      close();
+    }
+  });
 
   return (
-    <div className="fixed z-10 inset-0 overflow-y-auto">
+    <div
+      className={cn(
+        'fixed z-10 inset-0 overflow-y-auto opacity-1 transition-opacity',
+        !showModal && 'pointer-events-none opacity-0'
+      )}
+    >
       <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -62,7 +70,7 @@ export const Modal = ({
                 >
                   {title}
                 </h3>
-                <div className="mt-2">{children}</div>
+                <div className="mt-2 text-gray-800">{children}</div>
               </div>
             </div>
           </div>
@@ -72,9 +80,10 @@ export const Modal = ({
               fixedButton && 'sticky bottom-4 right-4'
             )}
           >
-            <Button variant="muted" onClick={() => setShowModal(false)}>
+            <Button variant="muted" onClick={() => close()}>
               Close [Esc]
             </Button>
+            {buttons}
           </div>
         </div>
       </div>

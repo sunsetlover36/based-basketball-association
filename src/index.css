@@ -25,4 +25,23 @@
   ul li:last-child {
     margin-bottom: 0;
   }
+
+  .custom-scrollbar {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #2563eb transparent; /* Firefox */
+  }
+
+  /* For WebKit browsers (Chrome, Safari) */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #2563eb;
+    border-radius: 10px;
+  }
 }

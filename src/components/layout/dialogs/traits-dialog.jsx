@@ -7,7 +7,9 @@ export const TraitsDialog = () => {
   return isOpen ? (
     <Modal
       showModal={isOpen}
-      setShowModal={toggle}
+      close={() => {
+        toggle(false);
+      }}
       title="Traits"
       className="sm:max-w-[90%] 2xl:max-w-[50%]"
       fixedButton

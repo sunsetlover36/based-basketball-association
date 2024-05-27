@@ -12,11 +12,13 @@ export const ConnectButton = () => {
   }
 
   let isChainSupported = false;
+  let wallet;
   if (wallets && wallets.length > 0) {
-    const wallet = wallets[0];
+    wallet = wallets[0];
     isChainSupported = +wallet.chainId.split(':')[1] === baseSepolia.id;
   }
 
+  console.log(authenticated, isChainSupported);
   return isChainSupported || !authenticated ? (
     <Button
       disabled={!privyReady}
@@ -25,7 +27,7 @@ export const ConnectButton = () => {
       {authenticated ? 'Disconnect' : 'Connect'}
     </Button>
   ) : (
-    <Button onClick={() => wallet.switchChain(baseSepolia.id)}>
+    <Button onClick={() => wallet && wallet.switchChain(baseSepolia.id)}>
       Switch to Base Sepolia
     </Button>
   );

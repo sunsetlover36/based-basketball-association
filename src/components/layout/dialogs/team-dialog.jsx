@@ -5,7 +5,13 @@ export const TeamDialog = () => {
   const { isOpen, toggle } = useDialog('teamDialog');
 
   return isOpen ? (
-    <Modal showModal={isOpen} setShowModal={toggle} title="Team">
+    <Modal
+      showModal={isOpen}
+      close={() => {
+        toggle(false);
+      }}
+      title="Team"
+    >
       <ul>
         <li className="mb-4">
           ruburi —{' '}

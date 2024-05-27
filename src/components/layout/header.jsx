@@ -8,10 +8,10 @@ export const Header = () => {
 
   return (
     <header className="min-h-[10vh] px-4 md:px-8 flex items-center justify-end">
-      <div className="flex items-center">
-        <Button className="mr-4" onClick={() => navigate('/')}>
-          About
-        </Button>
+      <div className="flex items-center gap-x-4">
+        <Button onClick={() => navigate('/matches')}>Matches</Button>
+        <Button onClick={() => navigate('/team')}>My Team</Button>
+        <Button onClick={() => navigate('/')}>About</Button>
         <ConnectButton />
       </div>
     </header>
