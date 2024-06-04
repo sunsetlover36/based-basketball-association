@@ -95,29 +95,31 @@ export const MatchRoom = () => {
               <div>
                 Team <span className="text-blue-600">Based</span>
               </div>
-              {state === 'finished' && score.player1 > score.player2 ? (
-                <div className="text-green-600"> [winner]</div>
-              ) : (
-                <div className="text-red-600"> [loser]</div>
-              )}
+              {state === 'finished' &&
+                (score.player1 > score.player2 ? (
+                  <div className="text-green-600"> [winner]</div>
+                ) : (
+                  <div className="text-red-600"> [loser]</div>
+                ))}
             </div>
             <div className="mx-8">vs.</div>
             <div className="w-48">
               Team <span className="text-blue-600">Ballers</span>
-              {state === 'finished' && score.player2 > score.player1 ? (
-                <div className="text-green-600"> [winner]</div>
-              ) : (
-                <div className="text-red-600"> [loser]</div>
-              )}
+              {state === 'finished' &&
+                (score.player2 > score.player1 ? (
+                  <div className="text-green-600"> [winner]</div>
+                ) : (
+                  <div className="text-red-600"> [loser]</div>
+                ))}
             </div>
           </div>
-          <h4 className="text-2xl border-2 border-blue-600 px-2 rounded-lg w-fit mx-auto">
+          <h4 className="text-2xl border-2 border-blue-600 px-2 rounded-lg w-fit mx-auto mt-4 min-w-12">
             {matchState}
           </h4>
         </div>
         <div className="w-1/2 mx-auto">
           <div className="w-full">
-            <div className="border border-blue-600 rounded-lg p-4 mb-4 h-[550px] overflow-y-auto custom-scrollbar">
+            <div className="border-4 border-blue-600 rounded-lg p-4 mb-4 h-[550px] overflow-y-auto custom-scrollbar">
               <h3 className="text-xl text-center">Live match feed</h3>
               <div>
                 {[...feed].reverse().map((feedItem) => {
