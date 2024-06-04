@@ -1,8 +1,9 @@
 import { RouterProvider } from 'react-router-dom';
 import { PrivyProvider } from '@privy-io/react-auth';
 import { WagmiProvider } from '@privy-io/wagmi';
-import { baseSepolia } from 'wagmi/chains';
+import { base, baseSepolia } from 'wagmi/chains';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { OnchainKitProvider } from '@coinbase/onchainkit';
 
 import { router } from './routes/router';
 import { wagmiConfig } from './lib/wagmi';
@@ -25,7 +26,9 @@ export const App = () => {
     >
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
-          <RouterProvider router={router} />
+          <OnchainKitProvider chain={base}>
+            <RouterProvider router={router} />
+          </OnchainKitProvider>
         </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>

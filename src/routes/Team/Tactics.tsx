@@ -109,7 +109,7 @@ export const Tactics = () => {
         )}
       </div>
 
-      <div className="flex items-center gap-x-16">
+      <div className="flex gap-x-16">
         <div>
           <h3 className="text-xl text-slate-600 mb-1">Game mood</h3>
 
@@ -124,7 +124,7 @@ export const Tactics = () => {
 
           <div>
             <h3 className="text-lg text-slate-600">{mood.title}</h3>
-            <p>{mood.description}</p>
+            <p className="h-20">{mood.description}</p>
           </div>
         </div>
 

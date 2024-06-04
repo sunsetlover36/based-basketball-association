@@ -5,6 +5,12 @@ export const createUIStore = (set) => ({
       store.gym = gym;
     });
   },
+  isTrainingMode: false,
+  setIsTrainingMode: (isTrainingMode) => {
+    set((store) => {
+      store.isTrainingMode = isTrainingMode;
+    });
+  },
   dialogs: {
     teamDialog: {
       isOpen: false,

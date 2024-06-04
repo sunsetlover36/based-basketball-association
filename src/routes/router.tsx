@@ -7,6 +7,7 @@ import { Burn } from './Burn';
 import { Team } from './Team';
 import { Games } from './Games';
 import { Game } from './Game';
+import { Leaderboard } from './Leaderboard';
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
             element: <Game />,
           },
         ],
+      },
+      {
+        path: 'leaderboard',
+        element: <Leaderboard />,
       },
     ],
   },

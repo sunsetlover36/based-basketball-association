@@ -15,7 +15,9 @@ import {
 export const Wrapper = ({ children }) => {
   const { pathname } = useLocation();
 
-  const isCenteredContent = !['/team'].some((path) => pathname.includes(path));
+  const isCenteredContent = !['/team', '/leaderboard'].some((path) =>
+    pathname.includes(path)
+  );
 
   return (
     <>

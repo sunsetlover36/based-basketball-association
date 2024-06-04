@@ -40,7 +40,7 @@ export const Team = () => {
       animate={{ opacity: 1 }}
       className="w-full flex justify-center"
     >
-      <div>
+      <div className="w-1/2">
         <div className="flex items-center">
           <div className="text-4xl mb-1 border-2 border-blue-600 w-full h-52 rounded-lg flex flex-col items-center justify-center">
             <img src="/team-logo.png" className="w-32 h-32" />
@@ -75,11 +75,11 @@ export const Team = () => {
           animate={{ opacity: 1 }}
           className="my-2"
         >
-          <div className="flex mb-16">
-            <div className="w-1/2">
+          <div className="flex mb-16 justify-between">
+            <div className="w-1/2 mr-8">
               <Tactics />
             </div>
-            <History className="ml-16 w-[500px]" />
+            <History className="w-1/2" />
           </div>
 
           <Players

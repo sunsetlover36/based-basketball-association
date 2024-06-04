@@ -9,6 +9,8 @@ interface ButtonProps {
   disabled?: boolean;
   children?: ReactNode;
   onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 export const Button: FC<ButtonProps> = ({
   variant = 'primary',
@@ -17,6 +19,8 @@ export const Button: FC<ButtonProps> = ({
   className,
   disabled,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
 
@@ -25,7 +29,13 @@ export const Button: FC<ButtonProps> = ({
       disabled={disabled}
       onMouseDown={() => setIsMouseDown(true)}
       onMouseUp={() => setIsMouseDown(false)}
-      onMouseLeave={() => setIsMouseDown(false)}
+      onMouseLeave={() => {
+        setIsMouseDown(false);
+        if (onMouseLeave) {
+          onMouseLeave();
+        }
+      }}
+      onMouseEnter={onMouseEnter}
       onClick={onClick}
       className={cn(
         'text-base md:text-lg focus:outline-none rounded-md shadow-sm shadow-gray-600 transition-all duration-100',
