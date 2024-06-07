@@ -31,6 +31,7 @@ export const PlayerDialog = () => {
       },
     ]);
     toggle(false);
+    setIsTrainingMode(false);
   };
 
   const { name, image, traits } = selectedPlayer || {};
