@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import { useDialog } from '@/store';
 import { Button } from '@/components';
 import { TeamDialog, TraitsDialog } from '@/components/dialogs';
@@ -9,21 +11,24 @@ export const App = () => {
   const paragraphClassName =
     'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] lg:w-[60%] 2xl:w-[55%] mx-auto mt-2 !leading-5 2xl:!leading-7';
 
+  const [currentPlayer, setCurrentPlayer] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPlayer((currentPlayer) => (currentPlayer + 1) % 7);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <div className="w-full min-h-screen border-[1rem] md:border-[2rem] border-blue-600 flex flex-col p-4 md:p-8 items-center justify-center relative">
         <div className="text-center uppercase">
-          <video
-            autoPlay
-            loop
-            muted
-            controls={false}
-            disablePictureInPicture
-            controlsList="nodownload nofullscreen noremoteplayback"
-            className="w-32 sm:w-40 md:w-48 2xl:w-auto mx-auto mb-2"
-          >
-            <source src="/player.mp4" type="video/mp4" />
-          </video>
+          <img
+            src={`/player${currentPlayer}.gif`}
+            className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 2xl:w-auto 2xl:h-80 mx-auto mb-2"
+          />
           <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl 2xl:text-6xl text-blue-600">
             Based Basketball Association
           </h1>
