@@ -1,10 +1,18 @@
+import { type FC } from 'react';
+
 import { cn } from '@/lib/utils';
 
-export const Progress = ({
+interface ProgressProps {
+  progress: number;
+  potentialProgress?: number;
+  total?: number;
+  className?: string;
+  wrapperClassName?: string;
+}
+export const Progress: FC<ProgressProps> = ({
   progress,
-  negativeProgress = 0,
-  positiveProgress = 0,
-  total = 100,
+  potentialProgress = 0,
+  total = 99,
   className,
   wrapperClassName,
 }) => {
@@ -16,24 +24,29 @@ export const Progress = ({
       )}
     >
       <div
-        className={cn('bg-blue-600 h-2 rounded-l-lg', className)}
+        className={cn(
+          'bg-blue-600 h-2 rounded-l-lg',
+          progress >= total && 'rounded-lg',
+          className
+        )}
         style={{
-          width: `${((progress - negativeProgress) / total) * 100}%`,
+          width: `${
+            ((potentialProgress < 0 ? progress + potentialProgress : progress) /
+              total) *
+            100
+          }%`,
         }}
       />
-      {negativeProgress !== 0 && (
+      {potentialProgress !== 0 && (
         <div
-          className="bg-red-600 rounded-lg"
+          className={cn(
+            potentialProgress < 0 && 'bg-red-600 rounded-r-lg',
+            potentialProgress > 0 && 'bg-green-600',
+            progress + potentialProgress === total && 'rounded-r-lg',
+            progress + potentialProgress <= 0 && 'rounded-l-lg'
+          )}
           style={{
-            width: `${(negativeProgress / total) * 100}%`,
-          }}
-        />
-      )}
-      {positiveProgress !== 0 && (
-        <div
-          className="bg-green-600 rounded-r-lg"
-          style={{
-            width: `${(positiveProgress / total) * 100}%`,
+            width: `${(Math.abs(potentialProgress) / total) * 100}%`,
           }}
         />
       )}

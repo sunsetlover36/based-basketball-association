@@ -6,7 +6,6 @@ import {
   useWriteContract,
 } from 'wagmi';
 
-import { useGame } from '@/lib/queryClient';
 import { shortenAddress } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components';
@@ -100,6 +99,8 @@ const PokerTable = ({ players }) => {
 };
 
 export const Game = () => {
+  return null;
+
   const navigate = useNavigate();
   const { gameId } = useParams();
   const { data: game } = useGame(gameId);

@@ -1,118 +1,70 @@
-import { motion } from 'framer-motion';
-import {
-  DndContext,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
+import { type FC } from 'react';
 
+import { type Player as IPlayer } from '@/types';
+import { useTeam } from '@/lib/queryClient';
 import { cn } from '@/lib/utils';
-import { useUser } from '@/lib/queryClient';
-import { Player } from '@/components';
-import { useStore } from '@/store';
-import { Draggable, Droppable } from '@/components/layout';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export const Players = ({
-  selectedPlayer,
-  hoveredPlayer,
-  setHoveredPlayer,
-  setSelectedPlayer,
-}) => {
-  const { data: user } = useUser();
-  const { gym, setIsTrainingMode } = useStore();
+interface PlayerProps {
+  player: IPlayer;
+  onClick?: () => void;
+}
+export const Player: FC<PlayerProps> = ({ player, onClick }) => {
+  const { fullName, number, country, nickname } = player;
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
-
-  if (!user) {
-    return null;
-  }
-
-  const handleDragEnd = ({ over, active: { id } }) => {
-    if (over) {
-      setIsTrainingMode(true);
-      setSelectedPlayer(id);
-    }
-  };
-
-  const { team: { players } = { players: [] } } = user;
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="flex justify-between">
-        <motion.div className="w-1/2 mr-8">
-          <h2 className="text-2xl mb-2">Team players</h2>
+    <div
+      className={cn(
+        'rounded-lg py-2 px-8 w-1/4 transition-all ease-in-out',
+        onClick && 'hover:bg-blue-200 cursor-pointer select-none'
+      )}
+      onClick={onClick}
+    >
+      <img
+        className="w-full rounded-lg mb-4"
+        src="/unrevealed.gif"
+        alt={fullName}
+      />
 
-          <div className={cn('flex gap-4 mt-2 mb-8 min-h-48 w-full')}>
-            {players.length > 0 ? (
-              players.map((player) => {
-                return (
-                  <Draggable key={player.tokenId} draggableId={player.tokenId}>
-                    <Player
-                      player={player}
-                      isHovered={
-                        hoveredPlayer === player.tokenId ||
-                        selectedPlayer === player.tokenId
-                      }
-                      onMouseEnter={() => setHoveredPlayer(player.tokenId)}
-                      onMouseLeave={() => setHoveredPlayer(null)}
-                      onClick={() => setSelectedPlayer(player.tokenId)}
-                    />
-                  </Draggable>
-                );
-              })
-            ) : (
-              <p>No players</p>
-            )}
-          </div>
-        </motion.div>
-        <motion.div className="w-1/2">
-          <h2 className="text-2xl mb-2">Gym</h2>
-
-          <div className={cn('flex gap-4 mt-2 mb-8 min-h-48 w-full')}>
-            {gym.length > 0 &&
-              gym.map((player) => {
-                return (
-                  <div>
-                    <Player
-                      key={player.tokenId}
-                      player={player}
-                      isHovered={
-                        hoveredPlayer === player.tokenId ||
-                        selectedPlayer === player.tokenId
-                      }
-                      onMouseEnter={() => setHoveredPlayer(player.tokenId)}
-                      onMouseLeave={() => setHoveredPlayer(null)}
-                      onClick={() => {
-                        setSelectedPlayer(player.tokenId);
-                        setIsTrainingMode(true);
-                      }}
-                    />
-                    <div className="flex justify-between items-center text-sm">
-                      <p>{player.trainingType}</p>
-                      <p>3 hours</p>
-                    </div>
-                  </div>
-                );
-              })}
-            <Droppable droppableId={'droppable'}>
-              <div
-                className={cn(
-                  'cursor-pointer w-40 h-[186px] border-2 border-blue-600 rounded-lg flex items-center justify-center'
-                )}
-              >
-                <p className="text-center leading-4">
-                  Drag and drop players here
-                </p>
-              </div>
-            </Droppable>
-          </div>
-        </motion.div>
+      <p className="text-lg font-bold text-center leading-4">{fullName}</p>
+      {nickname && (
+        <p className="text-xl text-center leading-6 text-blue-600">
+          &laquo;{nickname}&raquo;
+        </p>
+      )}
+      <div className="flex items-center justify-center">
+        <img
+          src={`https://flagcdn.com/w20/${country.toLowerCase()}.png`}
+          alt={country}
+          className="mr-2"
+        />
+        <p className="text-2xl font-bold text-center text-blue-500">
+          #{number}
+        </p>
       </div>
-    </DndContext>
+    </div>
+  );
+};
+
+export const Players = () => {
+  const navigate = useNavigate();
+  const { address } = useParams();
+
+  const { data: team } = useTeam(address);
+  const { players } = team!;
+
+  return (
+    <div className="w-full">
+      <h2 className="text-2xl mb-2">Team Players</h2>
+      <div className="flex items-center gap-4">
+        {players.map((player, i) => (
+          <Player
+            key={player._id}
+            player={player}
+            onClick={() => navigate(`/${address}/team/${i + 1}`)}
+          />
+        ))}
+      </div>
+    </div>
   );
 };

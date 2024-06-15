@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 import { Button, Slider, Loader } from '@/components';
 import { cn, formatMood, formatAggression } from '@/lib/utils';
-import { updateUser } from '@/lib/api';
+// import { updateUser } from '@/lib/api';
 import { useUser } from '@/lib/queryClient';
 import { queryClient } from '../../lib/queryClient';
 
@@ -30,6 +30,8 @@ const schemes = [
   },
 ];
 export const Tactics = () => {
+  return null;
+
   const {
     data: user,
     isFetching: isUserFetching,

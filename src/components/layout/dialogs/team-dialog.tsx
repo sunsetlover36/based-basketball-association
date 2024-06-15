@@ -4,7 +4,7 @@ import { Modal } from '@/components';
 export const TeamDialog = () => {
   const { isOpen, toggle } = useDialog('teamDialog');
 
-  return isOpen ? (
+  return (
     <Modal
       showModal={isOpen}
       close={() => {
@@ -38,5 +38,5 @@ export const TeamDialog = () => {
         </li>
       </ul>
     </Modal>
-  ) : null;
+  );
 };

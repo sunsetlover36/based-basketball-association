@@ -1,22 +1,75 @@
-import clsx from 'clsx';
+import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { intervalToDuration } from 'date-fns';
 
-export const cn = (...inputs) => twMerge(clsx(inputs));
+import { PlayerTraits, PlayerSpecialTrait, PlayerTrainingMode } from '@/types';
 
-export const SPECIAL_TRAITS_MAP = {
-  Selfish: -1,
-  'Lone Wolf': -1,
-  Fragile: -1,
-  Crumbler: -1,
-  Hothead: -1,
-  Critic: 0,
-  'Clutch Player': 1,
-  Energizer: 1,
-  Playmaker: 1,
-  Sharpshooter: 1,
-  Gladiator: 1,
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
+
+export const TRAINING_MODE_MAP = {
+  [PlayerTrainingMode.ATTACK]: {
+    label: 'Attack',
+    emoji: '🏀',
+  },
+  [PlayerTrainingMode.DEFENSE]: {
+    label: 'Defense',
+    emoji: '🛡️',
+  },
+  [PlayerTrainingMode.MEDITATION]: {
+    label: 'Meditation',
+    emoji: '🧘',
+  },
+  [PlayerTrainingMode.CARDIO]: {
+    label: 'Cardio',
+    emoji: '🏃',
+  },
+  [PlayerTrainingMode.STRENGTH]: {
+    label: 'Strength',
+    emoji: '💪',
+  },
 };
-export const formatIndexToPos = (i) => {
+export const SPECIAL_TRAITS_IMPACT = {
+  [PlayerSpecialTrait.SELFISH]: -1,
+  [PlayerSpecialTrait.LONE_WOLF]: -1,
+  [PlayerSpecialTrait.FRAGILE]: -1,
+  [PlayerSpecialTrait.CRUMBLER]: -1,
+  [PlayerSpecialTrait.HOTHEAD]: -1,
+  [PlayerSpecialTrait.CRITIC]: 0,
+  [PlayerSpecialTrait.CLUTCH_PLAYER]: 1,
+  [PlayerSpecialTrait.ENERGIZER]: 1,
+  [PlayerSpecialTrait.PLAYMAKER]: 1,
+  [PlayerSpecialTrait.SHARPSHOOTER]: 1,
+  [PlayerSpecialTrait.GLADIATOR]: 1,
+};
+export const SPECIAL_TRAITS_MAP = {
+  [PlayerSpecialTrait.SELFISH]: 'Selfish',
+  [PlayerSpecialTrait.LONE_WOLF]: 'Lone Wolf',
+  [PlayerSpecialTrait.FRAGILE]: 'Fragile',
+  [PlayerSpecialTrait.CRUMBLER]: 'Crumbler',
+  [PlayerSpecialTrait.HOTHEAD]: 'Hot Head',
+  [PlayerSpecialTrait.CRITIC]: 'Critic',
+  [PlayerSpecialTrait.CLUTCH_PLAYER]: 'Clutch Player',
+  [PlayerSpecialTrait.ENERGIZER]: 'Energizer',
+  [PlayerSpecialTrait.PLAYMAKER]: 'Playmaker',
+  [PlayerSpecialTrait.SHARPSHOOTER]: 'Sharpshooter',
+  [PlayerSpecialTrait.GLADIATOR]: 'Gladiator',
+};
+export const TRAITS_MAP: Record<keyof PlayerTraits, string> = {
+  shooting: 'Shooting',
+  dribbling: 'Dribbling',
+  passing: 'Passing',
+  blocking: 'Blocking',
+  stealing: 'Stealing',
+  speed: 'Speed',
+  strength: 'Strength',
+  stamina: 'Stamina',
+  injury: 'Injury',
+  determination: 'Determination',
+  reactionTime: 'Reaction Time',
+  specialTraits: 'Special Traits',
+};
+
+export const formatIndexToPos = (i: number) => {
   switch (i) {
     case 0:
       return 'Forward';
@@ -29,7 +82,7 @@ export const formatIndexToPos = (i) => {
   }
 };
 
-export const formatMood = (mood) => {
+export const formatMood = (mood: number) => {
   let title;
   let description;
 
@@ -46,7 +99,7 @@ export const formatMood = (mood) => {
 
   return { title, description };
 };
-export const formatAggression = (aggression) => {
+export const formatAggression = (aggression: number) => {
   let title;
   let description;
 
@@ -67,3 +120,22 @@ export const formatAggression = (aggression) => {
 
 export const shortenAddress = (address?: string) =>
   address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
+
+export const formatToDuration = (startDate: string, endDate: string) => {
+  const duration = intervalToDuration({
+    start: new Date(startDate),
+    end: new Date(endDate),
+  });
+
+  const parts = [];
+  if (duration.days) parts.push(`${duration.days} day`);
+  if (duration.hours) parts.push(`${duration.hours}h`);
+  if (duration.minutes) parts.push(`${duration.minutes}m`);
+
+  // If both days and hours are zero, show only minutes
+  if (parts.length === 0 && duration.minutes === 0) {
+    parts.push(`0m`);
+  }
+
+  return parts.join(' ');
+};

@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Name } from '@coinbase/onchainkit/identity';
 
-import { Button } from '@/components';
 import { ConnectButton } from './connect-button';
+import { useUser } from '@/lib/queryClient';
+import { Button } from '@/components';
+import { useActiveAccount } from 'thirdweb/react';
 
 export const Header = () => {
   const navigate = useNavigate();
+
+  const account = useActiveAccount();
+  const { data: user } = useUser();
 
   return (
     <header className="min-h-[10vh] px-4 md:px-8 flex items-center justify-between">
@@ -20,31 +24,23 @@ export const Header = () => {
           <p>Association</p>
         </div>
       </div>
-      <div className="flex items-center gap-x-4">
-        <Button onClick={() => navigate('/games')}>Games</Button>
-        <Button onClick={() => navigate('/team')}>My Team</Button>
-        <Button onClick={() => navigate('/leaderboard')}>Leaderboard</Button>
-      </div>
       <div className="flex items-center">
-        <div className="mr-8 border-2 border-blue-600 rounded-lg px-2 py-1">
-          <span className="text-sm">🏀</span> 1 200 Points
-        </div>
-        <div className="flex h-10 items-center space-x-4">
-          <div className="flex flex-col text-right">
-            <b className="-mb-1">
-              <Name address="0x6047ec2435C5906241AeAcC13b09D3c0eb09Cb45" />
-            </b>
-            <Name
-              address="0x6047ec2435C5906241AeAcC13b09D3c0eb09Cb45"
-              showAddress
-            />
-          </div>
-          <Avatar
-            address="0x6047ec2435C5906241AeAcC13b09D3c0eb09Cb45"
-            showAttestation
-          />
-        </div>
-        {/* <ConnectButton /> */}
+        {account && user && user.team && (
+          <>
+            <Button onClick={() => navigate(`/${user.address}/team`)}>
+              My Team
+            </Button>
+          </>
+        )}
+        <Button className="mx-4" onClick={() => navigate('/leaderboard')}>
+          Leaderboard
+        </Button>
+        {account && user && user.team && (
+          <Button className="mr-4" onClick={() => navigate('/invite')}>
+            Invite friends
+          </Button>
+        )}
+        <ConnectButton />
       </div>
     </header>
   );

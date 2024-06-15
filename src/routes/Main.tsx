@@ -4,13 +4,21 @@ import { motion } from 'framer-motion';
 
 import { useDialog } from '@/store';
 import { Button } from '@/components';
+import { useActiveAccount, useConnect } from 'thirdweb/react';
+import { DialogName } from '@/store/ui/types';
+import { useUser } from '@/lib/queryClient';
+import toast from 'react-hot-toast';
 
 export const Main = () => {
   const navigate = useNavigate();
-  const { toggle: toggleTeamDialog } = useDialog('teamDialog');
-  const { toggle: toggleTraitsDialog } = useDialog('traitsDialog');
+  const { toggle: toggleTeamDialog } = useDialog(DialogName.TEAM_DIALOG);
+  const { toggle: toggleTraitsDialog } = useDialog(DialogName.TRAITS_DIALOG);
 
   const [currentPlayer, setCurrentPlayer] = useState(0);
+
+  const { data: user } = useUser();
+  const account = useActiveAccount();
+  const connect = useConnect();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,7 +29,7 @@ export const Main = () => {
   }, []);
 
   const paragraphClassName =
-    'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] lg:w-[60%] 2xl:w-[55%] mx-auto mt-2 !leading-5 2xl:!leading-7';
+    'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] lg:w-[60%] 2xl:w-[50%] mx-auto mt-2 !leading-5 2xl:!leading-7';
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -37,25 +45,36 @@ export const Main = () => {
           Based Basketball Association is a basketball coach career simulator.
         </p>
         <p className={paragraphClassName}>
+          Every coach will have the opportunity to&nbsp;create{' '}
+          <span className="text-blue-600">1</span> unique player out of&nbsp;
+          <span className="text-blue-600">3333</span>. Train your basketball
+          player and get ready for the first season of&nbsp;the game in&nbsp;the
+          Association&rsquo;s training&nbsp;camp!
+        </p>
+        <p className={paragraphClassName}>
           Build your dream team, starting from your hood, to&nbsp;dominate the
-          street courts and then take over the whole basketball world.
-        </p>
-        <p className={paragraphClassName}>
-          Each player will receive <span className="text-blue-600">1</span>{' '}
-          random pack out of&nbsp;
-          <span className="text-blue-600">3333</span>, containing{' '}
-          <span className="text-blue-600">3</span>&nbsp;basketball enthusiasts
-          from your hood, whom you&rsquo;ll gather for the upcoming games.
-        </p>
-        <p className={paragraphClassName}>
-          Lead your squad to&nbsp;the title of&nbsp;the best team in&nbsp;the
-          world in&nbsp;the thrilling gameplay of&nbsp;Based Basketball.
+          street courts and then lead your squad to&nbsp;the title of&nbsp;the
+          best team in&nbsp;the world in&nbsp;the thrilling gameplay
+          of&nbsp;Based Basketball.
         </p>
       </div>
 
-      <div className="flex justify-center items-center mt-8">
-        <Button onClick={() => navigate('/mint')}>Mint</Button>
-      </div>
+      {(!account || !user?.team) && (
+        <div className="flex justify-center items-center mt-8">
+          <Button
+            onClick={() =>
+              !account
+                ? toast.error('Please connect wallet first!', {
+                    id: 'sign-in',
+                    icon: '🚨',
+                  })
+                : navigate('/create-team')
+            }
+          >
+            Create team
+          </Button>
+        </div>
+      )}
       <div className="flex justify-center items-center mt-4">
         <Button
           variant="ghost"

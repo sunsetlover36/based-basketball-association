@@ -4,7 +4,7 @@ import { Modal } from '@/components';
 export const TraitsDialog = () => {
   const { isOpen, toggle } = useDialog('traitsDialog');
 
-  return isOpen ? (
+  return (
     <Modal
       showModal={isOpen}
       close={() => {
@@ -19,50 +19,27 @@ export const TraitsDialog = () => {
       </h2>
       <ul className="list-disc pl-5 mb-4">
         <li>
-          <strong>Shooting Accuracy</strong> - ability to&nbsp;accurately shoot
-          the ball into the basket.
+          <strong>Shooting</strong> - shooting accuracy, shooting speed,
+          three-point shooting.
         </li>
         <li>
-          <strong>Shooting Speed</strong> - the time it&nbsp;takes for the
-          player to&nbsp;make a&nbsp;shot.
+          <strong>Dribbling</strong> - ability to&nbsp;control the ball and
+          maneuver around opponents.
         </li>
         <li>
-          <strong>Dribbling Skill</strong> - ability to&nbsp;control the ball
-          and maneuver around opponents.
+          <strong>Passing</strong> - ability to&nbsp;accurately pass the ball.
         </li>
         <li>
-          <strong>Three-Point Shooting</strong> - ability to&nbsp;accurately
-          shoot from beyond the three-point line.
+          <strong>Blocking</strong> - ability to&nbsp;block the ball.
         </li>
         <li>
-          <strong>Blocking Skill</strong> - ability to&nbsp;block
-          opponents&rsquo; shots.
+          <strong>Stealing</strong> - ability to&nbsp;steal the ball.
         </li>
         <li>
-          <strong>Stealing Skill</strong> - ability to&nbsp;steal the ball from
-          opponents.
-        </li>
-        <li>
-          <strong>Strength</strong> - physical strength, important for battles
-          under the basket.
+          <strong>Strength</strong> - physical strength.
         </li>
         <li>
           <strong>Speed</strong> - quickness and agility on&nbsp;the court.
-        </li>
-        <li>
-          <strong>Jumping Ability</strong> - vertical leap.
-        </li>
-        <li>
-          <strong>Passing Accuracy</strong> - ability to&nbsp;accurately pass
-          the ball.
-        </li>
-        <li>
-          <strong>Reaction Time</strong> - speed in reacting
-          to&nbsp;opponents&rsquo; actions.
-        </li>
-        <li>
-          <strong>Rebounding Skill</strong> - ability to&nbsp;grab rebounds
-          after missed shots.
         </li>
         <li>
           <strong>Stamina</strong> - indicates the player&rsquo;s fatigue.
@@ -71,7 +48,8 @@ export const TraitsDialog = () => {
         </li>
         <li>
           <strong>Injury</strong> - health status, can be&nbsp;either &laquo;Not
-          Injured&raquo; or&nbsp;&laquo;Injured for X days&raquo;.
+          Injured&raquo; or&nbsp;&laquo;Injured for{' '}
+          <span className="text-blue-600">X</span> days&raquo;.
         </li>
       </ul>
 
@@ -82,6 +60,10 @@ export const TraitsDialog = () => {
         <li>
           <strong>Determination</strong> - ability to&nbsp;stay focused and
           pursue goals despite obstacles. Increases with each game and practice.
+        </li>
+        <li>
+          <strong>Reaction Time</strong> - speed in reacting
+          to&nbsp;opponents&rsquo; actions.
         </li>
       </ul>
 
@@ -148,5 +130,5 @@ export const TraitsDialog = () => {
         </li>
       </ul>
     </Modal>
-  ) : null;
+  );
 };

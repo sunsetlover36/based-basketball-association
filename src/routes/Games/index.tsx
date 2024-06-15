@@ -9,11 +9,13 @@ import {
 } from 'wagmi';
 
 import { useDialog } from '@/store';
-import { useUser, useGames, queryClient } from '@/lib/queryClient';
+import { useUser, queryClient } from '@/lib/queryClient';
 import { Button, Loader } from '@/components';
 import { gameContract } from '@/lib/contracts';
 
 export const Games = () => {
+  return null;
+
   const navigate = useNavigate();
   const { toggle } = useDialog('newMatchDialog');
   const { address } = useAccount();

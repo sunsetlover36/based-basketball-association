@@ -1,5 +1,5 @@
 import { QueryClient, useQuery } from '@tanstack/react-query';
-import { getUser, getGames, getGameRoom } from '@/lib/api';
+import { getLeaderboard, getTeam, getUser } from '@/lib/api';
 
 export const queryClient = new QueryClient();
 
@@ -9,14 +9,15 @@ export const USER_QUERY = {
 };
 export const useUser = () => useQuery(USER_QUERY);
 
-export const GAMES_QUERY = {
-  queryKey: ['games'],
-  queryFn: getGames,
-};
-export const useGames = () => useQuery(GAMES_QUERY);
-
-export const useGame = (id) =>
+export const useTeam = (address?: string) =>
   useQuery({
-    queryKey: ['games', id],
-    queryFn: () => getGameRoom({ gameId: id }),
+    queryKey: address ? ['team', address] : [],
+    queryFn: () => getTeam(address!),
+    enabled: !!address,
   });
+
+export const LEADERBOARD_QUERY = {
+  queryKey: ['leaderboard'],
+  queryFn: getLeaderboard,
+};
+export const useLeaderboard = () => useQuery(LEADERBOARD_QUERY);

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-export const Player = ({ player, isHovered, className, ...props }) => {
+export const OldPlayer = ({ player, isHovered, className, ...props }) => {
   const { name, image } = player;
 
   return (

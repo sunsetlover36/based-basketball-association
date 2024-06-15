@@ -6,8 +6,9 @@ import { cn } from '@/lib/utils';
 import { Header } from './header';
 import { Footer } from './footer';
 import {
+  ConfirmTeamDialog,
+  ConfirmTrainingDialog,
   NewMatchDialog,
-  PlayerDialog,
   TeamDialog,
   TraitsDialog,
 } from './dialogs';
@@ -15,7 +16,7 @@ import {
 export const Wrapper = ({ children }) => {
   const { pathname } = useLocation();
 
-  const isCenteredContent = !['/team', '/leaderboard'].some((path) =>
+  const isCenteredContent = !['/team', '/leaderboard', '/invite'].some((path) =>
     pathname.includes(path)
   );
 
@@ -39,7 +40,8 @@ export const Wrapper = ({ children }) => {
       <TeamDialog />
       <TraitsDialog />
       <NewMatchDialog />
-      <PlayerDialog />
+      <ConfirmTrainingDialog />
+      <ConfirmTeamDialog />
 
       <Toaster />
     </>

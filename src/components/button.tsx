@@ -1,4 +1,4 @@
-import { type ReactNode, type FC, useState } from 'react';
+import { type ReactNode, type FC, useState, MouseEventHandler } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -8,7 +8,7 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   children?: ReactNode;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -45,7 +45,7 @@ export const Button: FC<ButtonProps> = ({
         variant === 'muted' &&
           'inline-flex justify-center border-2 border-gray-300 shadow-sm px-4 py-1 bg-white text-base text-gray-700 hover:bg-gray-300 focus:outline-none',
         variant === 'ghost' &&
-          'border-none hover:bg-transparent hover:text-blue-600 underline',
+          'border-none hover:bg-gray-200 hover:text-blue-600 px-4 py-1',
         variant === 'error' &&
           'bg-red-700 text-white px-4 py-1 hover:bg-red-600',
         disabled && 'opacity-50 cursor-not-allowed',

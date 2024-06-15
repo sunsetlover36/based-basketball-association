@@ -2,12 +2,11 @@ import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 import { Root } from './Root';
 import { Main } from './Main';
-import { Mint } from './Mint';
-import { Burn } from './Burn';
 import { Team } from './Team';
-import { Games } from './Games';
-import { Game } from './Game';
+import { TeamPlayer } from './Team/TeamPlayer';
 import { Leaderboard } from './Leaderboard';
+import { CreateTeam } from './CreateTeam';
+import { InviteFriends } from './InviteFriends';
 
 export const router = createBrowserRouter([
   {
@@ -20,34 +19,30 @@ export const router = createBrowserRouter([
         element: <Main />,
       },
       {
-        path: 'mint',
-        element: <Mint />,
+        path: 'create-team',
+        element: <CreateTeam />,
       },
       {
-        path: 'burn',
-        element: <Burn />,
-      },
-      {
-        path: 'team',
-        element: <Team />,
-      },
-      {
-        path: 'games',
+        path: ':address/team',
         element: <Outlet />,
         children: [
           {
             index: true,
-            element: <Games />,
+            element: <Team />,
           },
           {
-            path: ':gameId',
-            element: <Game />,
+            path: ':playerIndex',
+            element: <TeamPlayer />,
           },
         ],
       },
       {
         path: 'leaderboard',
         element: <Leaderboard />,
+      },
+      {
+        path: 'invite',
+        element: <InviteFriends />,
       },
     ],
   },
