@@ -33,7 +33,7 @@ export const Wrapper: FC<WrapperProps> = ({ children }) => {
 
   useEffect(() => {
     if (chainId && !isValidChain(chainId)) {
-      toast.error('Please switch to Base Sepolia network!', {
+      toast.error('Please switch to Base network!', {
         id: 'wrong-network-error',
         icon: '⛓️',
       });

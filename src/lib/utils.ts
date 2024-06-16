@@ -1,11 +1,11 @@
 import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { intervalToDuration } from 'date-fns';
-import { baseSepolia } from 'thirdweb/chains';
+import { base } from 'thirdweb/chains';
 
 import { PlayerTraits, PlayerSpecialTrait, PlayerTrainingMode } from '@/types';
 
-export const isValidChain = (chainId?: number) => chainId === baseSepolia.id;
+export const isValidChain = (chainId?: number) => chainId === base.id;
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 

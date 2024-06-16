@@ -4,7 +4,7 @@ import {
   useActiveWalletChain,
   useSwitchActiveWalletChain,
 } from 'thirdweb/react';
-import { baseSepolia } from 'thirdweb/chains';
+import { base } from 'thirdweb/chains';
 import { createWallet, walletConnect } from 'thirdweb/wallets';
 
 import { thirdwebClient } from '@/lib/thirdweb';
@@ -24,11 +24,11 @@ export const ConnectButton = () => {
 
   return (
     <div className="tw-connect-wrapper">
-      {chainId && chainId !== baseSepolia.id ? (
+      {chainId && chainId !== base.id ? (
         <Button
           className="bg-red-500"
           onClick={() => {
-            switchChain(baseSepolia);
+            switchChain(base);
           }}
         >
           Switch Network

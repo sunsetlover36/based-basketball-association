@@ -11,7 +11,7 @@ import {
   useActiveWalletChain,
   useSwitchActiveWalletChain,
 } from 'thirdweb/react';
-import { baseSepolia } from 'thirdweb/chains';
+import { base } from 'thirdweb/chains';
 import toast from 'react-hot-toast';
 
 import { useUser } from '@/lib/queryClient';
@@ -63,7 +63,7 @@ const formatTeamsData = (
     fcfsTeamsCreated,
     inviteTeamsCreated,
   ] = data;
-
+  console.log(data);
   return {
     maxContestTeams: Number(maxContestTeams.result),
     maxFcfsTeams: Number(maxFcfsTeams.result),
@@ -240,7 +240,7 @@ export const CreateTeam = () => {
   if (user.team) {
     return <Navigate to={`/${user.address}/team`} replace={true} />;
   }
-
+  console.log(formattedTeamsData);
   const { createdTeams, maxTeams } = getPhaseDetails(
     formattedTeamsData.currentPhase,
     formattedTeamsData
@@ -404,7 +404,7 @@ export const CreateTeam = () => {
                   onClick={(e) => {
                     if (!isValidChain(chainId)) {
                       e.preventDefault();
-                      switchNetwork(baseSepolia);
+                      switchNetwork(base);
                       return;
                     }
 

@@ -1,4 +1,4 @@
-import { sepolia } from 'thirdweb/chains';
+import { base } from 'thirdweb/chains';
 import {
   type VerifyLoginPayloadParams,
   type LoginPayload,
@@ -18,7 +18,7 @@ export const getLoginPayload = async ({
     .get(userUrls.LOGIN, {
       searchParams: {
         address,
-        chainId: sepolia.id.toString(),
+        chainId: base.id.toString(),
       },
     })
     .json();
