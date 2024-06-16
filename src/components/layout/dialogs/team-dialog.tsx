@@ -1,8 +1,9 @@
 import { useDialog } from '@/store';
 import { Modal } from '@/components';
+import { DialogName } from '@/store/ui/types';
 
 export const TeamDialog = () => {
-  const { isOpen, toggle } = useDialog('teamDialog');
+  const { isOpen, toggle } = useDialog(DialogName.TEAM_DIALOG);
 
   return (
     <Modal

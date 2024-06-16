@@ -1,7 +1,13 @@
-import { cn } from '@/lib/utils';
+import { type FC, type ReactNode } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 
-export const Droppable = ({ children, droppableId }) => {
+import { cn } from '@/lib/utils';
+
+interface DroppableProps {
+  children: ReactNode;
+  droppableId: string;
+}
+export const Droppable: FC<DroppableProps> = ({ children, droppableId }) => {
   const { isOver, setNodeRef } = useDroppable({
     id: droppableId,
   });

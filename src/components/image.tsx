@@ -1,8 +1,15 @@
-import { useState } from 'react';
+import { type FC, type ImgHTMLAttributes, useState } from 'react';
 
 import { Loader } from './loader';
 
-export const ImageWithLoader = ({ src, alt, className, width, height }) => {
+interface ImageWithLoaderProps extends ImgHTMLAttributes<HTMLImageElement> {}
+export const ImageWithLoader: FC<ImageWithLoaderProps> = ({
+  src,
+  alt,
+  className,
+  width,
+  height,
+}) => {
   const [loading, setLoading] = useState(true);
 
   const handleImageLoad = () => {

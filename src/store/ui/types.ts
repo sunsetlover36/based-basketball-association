@@ -1,7 +1,4 @@
-import { z } from 'zod';
-
 import { CreateTeamData, type Player, PlayerTrainingMode } from '@/types';
-import { createTeamSchema } from '@/routes/CreateTeam';
 
 export enum DialogName {
   TEAM_DIALOG = 'teamDialog',

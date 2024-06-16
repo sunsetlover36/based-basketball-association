@@ -5,13 +5,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
-import { Navigate, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { Navigate } from 'react-router-dom';
 import { Upload } from 'lucide-react';
 
-import { queryClient, useUser } from '@/lib/queryClient';
+import { useUser } from '@/lib/queryClient';
 import { Button, Input, Loader } from '@/components';
-import { createTeam } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { useReadContracts } from 'wagmi';
 import { teamsContract } from '@/lib/contracts';
@@ -190,7 +188,7 @@ export const CreateTeam = () => {
       const teamData = {
         ...data,
         teamLogo: data.teamLogo[0], // Access the first file
-        playerCountry: data.playerCountry.value,
+        playerCountry: data.playerCountry!.value,
       };
       setTeamData(teamData);
       toggleConfirmTeamDialog(true);

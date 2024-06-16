@@ -1,3 +1,4 @@
+import { type FC, type ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
 import Confetti from 'react-confetti';
@@ -12,12 +13,14 @@ import { Footer } from './footer';
 import {
   ConfirmTeamDialog,
   ConfirmTrainingDialog,
-  NewMatchDialog,
   TeamDialog,
   TraitsDialog,
 } from './dialogs';
 
-export const Wrapper = ({ children }) => {
+interface WrapperProps {
+  children: ReactNode;
+}
+export const Wrapper: FC<WrapperProps> = ({ children }) => {
   const { pathname } = useLocation();
   const windowSize = useWindowSize();
   const { isConfettiVisible } = useStore();
@@ -45,7 +48,6 @@ export const Wrapper = ({ children }) => {
 
       <TeamDialog />
       <TraitsDialog />
-      <NewMatchDialog />
       <ConfirmTrainingDialog />
       <ConfirmTeamDialog />
 

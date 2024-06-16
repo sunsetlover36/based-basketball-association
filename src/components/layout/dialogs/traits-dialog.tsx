@@ -1,8 +1,9 @@
 import { useDialog } from '@/store';
 import { Modal } from '@/components';
+import { DialogName } from '@/store/ui/types';
 
 export const TraitsDialog = () => {
-  const { isOpen, toggle } = useDialog('traitsDialog');
+  const { isOpen, toggle } = useDialog(DialogName.TRAITS_DIALOG);
 
   return (
     <Modal

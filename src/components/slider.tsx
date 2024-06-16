@@ -1,6 +1,9 @@
+import { type FC, type RefAttributes } from 'react';
 import * as RadixSlider from '@radix-ui/react-slider';
 
-export const Slider = (props) => (
+export const Slider: FC<
+  RadixSlider.SliderProps & RefAttributes<HTMLSpanElement>
+> = (props) => (
   <RadixSlider.Root
     className="relative flex items-center select-none touch-none w-64 h-4"
     {...props}

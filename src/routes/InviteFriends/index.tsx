@@ -1,16 +1,11 @@
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { Loader } from '@/components';
 import { useUser } from '@/lib/queryClient';
-import { Copy } from 'lucide-react';
-import { useCopyToClipboard } from 'react-use';
-import { shortenAddress } from '@/lib/utils';
 
 export const InviteFriends = () => {
-  const navigate = useNavigate();
-  const [, copyToClipboard] = useCopyToClipboard();
   const { data: user, isLoading, error } = useUser();
 
   if (isLoading) {
@@ -24,7 +19,6 @@ export const InviteFriends = () => {
     return <Navigate to="/" replace={true} />;
   }
 
-  const { referralCode } = user;
   return (
     <motion.div
       initial={{ opacity: 0 }}

@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { useMemo } from 'react';
 import toast from 'react-hot-toast';
 
 import { useDialog, useStore } from '@/store';
 import { Modal, Button } from '@/components';
-import { cn, TRAINING_MODE_MAP } from '@/lib/utils';
+import { TRAINING_MODE_MAP } from '@/lib/utils';
 import { queryClient, useTeam } from '@/lib/queryClient';
 import { DialogName } from '@/store/ui/types';
 import { trainPlayer } from '@/lib/api';
@@ -20,13 +19,6 @@ export const ConfirmTrainingDialog = () => {
 
   const { trainingMode, setTrainingMode } = useStore();
   const { isOpen, toggle } = useDialog(DialogName.CONFIRM_TRAINING_DIALOG);
-
-  const { writeContractAsync } = useWriteContract();
-
-  const [joinTx, setJoinTx] = useState<`0x${string}` | undefined>();
-  const joinTxReceipt = useWaitForTransactionReceipt({
-    hash: joinTx,
-  });
 
   const onStartTraining = async () => {
     const { _id, fullName } = player!;
@@ -47,16 +39,6 @@ export const ConfirmTrainingDialog = () => {
     });
     toggle(false);
   };
-
-  useEffect(() => {
-    if (joinTxReceipt.data && joinTxReceipt.data.status === 'success') {
-      console.log(joinTxReceipt.data);
-      queryClient.invalidateQueries({
-        queryKey: ['games'],
-      });
-      toast.success('Game created!', { icon: '🎮' });
-    }
-  }, [joinTxReceipt.data]);
 
   if (!player || trainingMode === null) {
     return null;

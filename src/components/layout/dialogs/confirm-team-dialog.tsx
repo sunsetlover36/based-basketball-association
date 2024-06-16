@@ -13,7 +13,6 @@ import { queryClient } from '@/lib/queryClient';
 import { DialogName } from '@/store/ui/types';
 import { teamsContract } from '@/lib/contracts';
 import { createTeam, shareSocials } from '@/lib/api';
-import { useWindowSize } from 'react-use';
 
 export const ConfirmTeamDialog = () => {
   const account = useActiveAccount();

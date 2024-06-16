@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { useDialog } from '@/store';
 import { Button } from '@/components';
-import { useActiveAccount, useConnect } from 'thirdweb/react';
+import { useActiveAccount } from 'thirdweb/react';
 import { DialogName } from '@/store/ui/types';
 import { useUser } from '@/lib/queryClient';
 import toast from 'react-hot-toast';
@@ -18,7 +18,6 @@ export const Main = () => {
 
   const { data: user } = useUser();
   const account = useActiveAccount();
-  const connect = useConnect();
 
   useEffect(() => {
     const interval = setInterval(() => {
