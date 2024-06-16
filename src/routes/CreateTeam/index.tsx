@@ -63,7 +63,7 @@ const formatTeamsData = (
     fcfsTeamsCreated,
     inviteTeamsCreated,
   ] = data;
-  console.log(data);
+
   return {
     maxContestTeams: Number(maxContestTeams.result),
     maxFcfsTeams: Number(maxFcfsTeams.result),
@@ -240,7 +240,7 @@ export const CreateTeam = () => {
   if (user.team) {
     return <Navigate to={`/${user.address}/team`} replace={true} />;
   }
-  console.log(formattedTeamsData);
+
   const { createdTeams, maxTeams } = getPhaseDetails(
     formattedTeamsData.currentPhase,
     formattedTeamsData

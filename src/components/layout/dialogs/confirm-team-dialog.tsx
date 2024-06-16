@@ -73,6 +73,8 @@ export const ConfirmTeamDialog = () => {
       }, 10000);
 
       toast.success('Team created!', { id: 'team-created', icon: '🎮' });
+    } catch (err) {
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +105,6 @@ export const ConfirmTeamDialog = () => {
   }, [isOpen]);
   useEffect(() => {
     if (createTxReceipt.data && createTxReceipt.data.status === 'success') {
-      console.log('WHY YOU CREATE', createTxReceipt.data);
       processCreationTx();
     }
   }, [createTxReceipt.data]);
