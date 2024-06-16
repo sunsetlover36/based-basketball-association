@@ -11,7 +11,7 @@ export const Team = () => {
   const account = useActiveAccount();
   const { address } = useParams();
   const { data: team, error, isLoading } = useTeam(address);
-  console.log('???', team, error);
+
   if (isLoading) {
     return <Loader size={100} className="mx-auto" />;
   }

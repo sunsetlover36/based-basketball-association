@@ -21,7 +21,7 @@ export const TeamDialog = () => {
           <a
             href="https://warpcast.com/ruburi"
             target="_blank"
-            className="text-purple-600"
+            className="text-purple-700"
           >
             Warpcast
           </a>

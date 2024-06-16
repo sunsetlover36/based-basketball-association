@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+import 'react-tooltip/dist/react-tooltip.css';
+
 import { App } from './App.jsx';
 import './index.css';
 

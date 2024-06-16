@@ -241,16 +241,16 @@ export const CreateTeam = () => {
             </p>
           </div>
 
-          <div
-            className={cn(
-              'flex flex-col',
-              isPhaseComplete && 'flex-col-reverse'
-            )}
-          >
+          <div className="flex flex-col">
+            <p>Teams created</p>
             <p className="text-3xl text-blue-600">
               {createdTeams}/{maxTeams}
             </p>
-            <p>Teams created</p>
+          </div>
+
+          <div className={cn(!isPhaseComplete && 'mt-8')}>
+            <p>Total Teams</p>
+            <p className="text-3xl text-blue-600">3333</p>
           </div>
         </div>
         {!isPhaseComplete && (
@@ -407,7 +407,7 @@ export const CreateTeam = () => {
           <div className="flex items-center justify-center mt-2">
             <img
               src="/x.png"
-              className="w-[30px] rounded-lg mr-4 cursor-pointer"
+              className="w-[29px] rounded-lg mr-4 cursor-pointer"
               onClick={() => window.open('https://x.com/BasedBBA', '_blank')}
             />
             <img

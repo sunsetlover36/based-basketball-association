@@ -13,8 +13,8 @@ import {
 } from '@/lib/utils';
 import { useDialog, useStore } from '@/store';
 import { DialogName } from '@/store/ui/types';
-import { cheerPlayer } from '@/lib/api';
-import { queryClient, useTeam } from '@/lib/queryClient';
+import { cheerPlayer, getBoost } from '@/lib/api';
+import { queryClient, useTeam, useUser } from '@/lib/queryClient';
 import { Player } from './Players';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useActiveAccount } from 'thirdweb/react';
@@ -73,6 +73,7 @@ export const TeamPlayer = () => {
   const navigate = useNavigate();
   const { address, playerIndex } = useParams();
   const account = useActiveAccount();
+  const { data: user } = useUser();
   const { data: team, error, isLoading } = useTeam(address);
 
   const { trainingMode, setTrainingMode } = useStore();
@@ -81,12 +82,29 @@ export const TeamPlayer = () => {
     useDialog(DialogName.CONFIRM_TRAINING_DIALOG);
 
   const [isBoosting, setIsBoosting] = useState(false);
+  const [showPoints, setShowPoints] = useState(false);
+  const [isCheered, setIsCheered] = useState(false);
 
   const player = useMemo(() => {
     return team?.players[Number(playerIndex) - 1];
   }, [team, playerIndex]);
+  const hasOgBoost = useMemo(() => {
+    const ogBoost = user?.boosts.find((b) => b.type === 'og');
+    return ogBoost && !ogBoost.claimed;
+  }, [user]);
+  const hasCoachBoost = useMemo(() => {
+    const coachBoost = user?.boosts.find((b) => b.type === 'coach');
+    return coachBoost && !coachBoost.claimed;
+  }, [user]);
 
   const onCheerPlayer = async () => {
+    setIsCheered(true);
+
+    setShowPoints(true);
+    setTimeout(() => {
+      setShowPoints(false);
+    }, 1000);
+
     await cheerPlayer({
       address: address!,
       playerId: player!._id,
@@ -98,6 +116,19 @@ export const TeamPlayer = () => {
       queryKey: ['team', address],
     });
     toast.success(`You have cheered for ${player!.fullName}!`);
+  };
+  const onBoostPlayer = async (type: 'og' | 'coach') => {
+    await getBoost(type);
+    await queryClient.invalidateQueries({
+      queryKey: ['user'],
+    });
+    await queryClient.invalidateQueries({
+      queryKey: ['team', address],
+    });
+    toast.success(`You have boosted ${player!.fullName}!`, {
+      icon: '🎉',
+      id: 'boost-player',
+    });
   };
 
   useEffect(() => {
@@ -147,18 +178,13 @@ export const TeamPlayer = () => {
 
   const traitsArr = Object.entries(traits).filter(([key]) => key !== '_id');
   const trainingDisabled = !isLastTrainingEnded || account?.address !== address;
-  console.log(
-    trainingDisabled,
-    !isLastTrainingEnded,
-    account?.address !== address
-  );
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="w-full flex justify-center"
     >
-      <div className="w-1/2">
+      <div className="xl:w-full 2xl:w-3/4 3xl:w-1/2">
         <div className="flex items-start mb-4">
           <Button
             className="mr-4 flex items-center"
@@ -286,14 +312,32 @@ export const TeamPlayer = () => {
                     <p className="text-blue-600 text-3xl">
                       {lastTraining.fans.length}
                     </p>
-                    {account?.address !== address && (
-                      <Button
-                        className="ml-4"
-                        size="sm"
-                        onClick={onCheerPlayer}
-                      >
-                        Cheer
-                      </Button>
+                    <Button
+                      data-tooltip-id="cheer"
+                      data-tooltip-content="Cheer gives you 50 points"
+                      className="ml-4"
+                      size="sm"
+                      onClick={onCheerPlayer}
+                    >
+                      Cheer
+                    </Button>
+                    {account?.address !== address && address && (
+                      <div className="relative">
+                        {!lastTraining.fans.includes(address) && !isCheered && (
+                          <Button
+                            className="ml-4"
+                            size="sm"
+                            onClick={onCheerPlayer}
+                          >
+                            Cheer
+                          </Button>
+                        )}
+                        {showPoints && (
+                          <div className="point-animation absolute -top-8 text-blue-600 whitespace-nowrap">
+                            +50 points
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 ) : (
@@ -354,7 +398,7 @@ export const TeamPlayer = () => {
                       {!isLastTrainingEnded &&
                         lastTraining &&
                         lastTraining.mode === value && (
-                          <p className="text-sm">
+                          <p className="text-xs xl:text-sm">
                             {formatToDuration(
                               new Date().toISOString(),
                               lastTraining.endDate
@@ -373,6 +417,32 @@ export const TeamPlayer = () => {
                 Players recover 4 stamina per hour.
               </p>
             )}
+
+            {address === account?.address &&
+              user?.boosts &&
+              user.boosts.length > 0 && (
+                <div className="mt-4">
+                  <h2 className="text-2xl mb-1">Secret Menu</h2>
+                  <div className="flex gap-x-2">
+                    {hasOgBoost && (
+                      <Button
+                        className="secret-button-gradient"
+                        onClick={() => onBoostPlayer('og')}
+                      >
+                        OG Boost
+                      </Button>
+                    )}
+                    {hasCoachBoost && (
+                      <Button
+                        className="secret-button-gradient"
+                        onClick={() => onBoostPlayer('coach')}
+                      >
+                        Coach Boost
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
           </div>
 
           <div>

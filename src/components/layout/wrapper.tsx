@@ -1,7 +1,11 @@
 import { Toaster } from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
+import { Tooltip } from 'react-tooltip';
 
 import { cn } from '@/lib/utils';
+import { useStore } from '@/store';
 
 import { Header } from './header';
 import { Footer } from './footer';
@@ -15,6 +19,8 @@ import {
 
 export const Wrapper = ({ children }) => {
   const { pathname } = useLocation();
+  const windowSize = useWindowSize();
+  const { isConfettiVisible } = useStore();
 
   const isCenteredContent = !['/team', '/leaderboard', '/invite'].some((path) =>
     pathname.includes(path)
@@ -44,6 +50,17 @@ export const Wrapper = ({ children }) => {
       <ConfirmTeamDialog />
 
       <Toaster />
+      <Tooltip id="cheer" />
+
+      {isConfettiVisible && (
+        <Confetti
+          width={windowSize.width * 0.9}
+          height={windowSize.height * 0.95}
+          numberOfPieces={500}
+          recycle={false}
+          className="mx-auto"
+        />
+      )}
     </>
   );
 };

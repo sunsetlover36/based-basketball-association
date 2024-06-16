@@ -21,11 +21,13 @@ export const Button: FC<ButtonProps> = ({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  ...props
 }) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   return (
     <button
+      {...props}
       disabled={disabled}
       onMouseDown={() => setIsMouseDown(true)}
       onMouseUp={() => setIsMouseDown(false)}

@@ -55,12 +55,19 @@ export interface Team {
   logo: string;
   players: Player[];
 }
+export interface UserBoost {
+  type: 'og' | 'coach';
+  claimed: boolean;
+}
 export interface User {
   address: string;
   team: Team;
   points: number;
   referralCode: string;
+  hasReceivedPointsForShare?: boolean;
+  boosts: UserBoost[];
 }
+
 export type Leaderboard = Array<{ address: string; points: number }>;
 
 export enum CreateTeamPhase {

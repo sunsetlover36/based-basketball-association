@@ -7,6 +7,7 @@ export default {
         nh: {
           raw: '(min-height: 676px),(min-width: 1024px)',
         },
+        '3xl': '1920px',
       },
     },
   },

@@ -46,10 +46,13 @@ export const Main = () => {
         </p>
         <p className={paragraphClassName}>
           Every coach will have the opportunity to&nbsp;create{' '}
-          <span className="text-blue-600">1</span> unique player out of&nbsp;
-          <span className="text-blue-600">3333</span>. Train your basketball
-          player and get ready for the first season of&nbsp;the game in&nbsp;the
-          Association&rsquo;s training&nbsp;camp!
+          <span className="text-blue-600">1</span>&nbsp;team out of&nbsp;
+          <span className="text-blue-600">3333</span> with their own{' '}
+          <span className="text-blue-600">unique player</span>.
+        </p>
+        <p className={paragraphClassName}>
+          Train your basketball player and get ready for the first season
+          of&nbsp;the game in&nbsp;the association&rsquo;s training camp!
         </p>
         <p className={paragraphClassName}>
           Build your dream team, starting from your hood, to&nbsp;dominate the
@@ -92,6 +95,19 @@ export const Main = () => {
         <Button variant="ghost" onClick={() => toggleTeamDialog(true)}>
           Team
         </Button>
+      </div>
+
+      <div className="flex items-center justify-center mt-4">
+        <img
+          src="/x.png"
+          className="w-[29px] rounded-lg mr-4 cursor-pointer"
+          onClick={() => window.open('https://x.com/BasedBBA', '_blank')}
+        />
+        <img
+          src="/warpcast.png"
+          className="w-[36px] cursor-pointer"
+          onClick={() => window.open('https://warpcast.com/basedbba', '_blank')}
+        />
       </div>
     </motion.div>
   );

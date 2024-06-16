@@ -23,5 +23,7 @@ export interface UIStore {
   setSelectedPlayer: (selectedPlayer: Player | null) => void;
   teamData: CreateTeamData | null;
   setTeamData: (teamData: CreateTeamData | null) => void;
+  isConfettiVisible: boolean;
+  toggleConfetti: (isConfettiVisible: boolean) => void;
   dialogs: Record<DialogName, Dialog>;
 }

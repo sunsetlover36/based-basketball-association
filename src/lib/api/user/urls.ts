@@ -8,4 +8,6 @@ export const userUrls = {
   TRAIN_PLAYER: 'train-player',
   CHEER_PLAYER: 'cheer-player',
   LEADERBOARD: 'leaderboard',
+  SHARE: 'share',
+  BOOST: 'boost',
 };

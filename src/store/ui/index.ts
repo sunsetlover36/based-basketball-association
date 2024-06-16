@@ -22,6 +22,12 @@ export const createUIStore: WithImmer<UIStore> = (set) => ({
       store.teamData = teamData;
     });
   },
+  isConfettiVisible: false,
+  toggleConfetti: (isConfettiVisible) => {
+    set((store) => {
+      store.isConfettiVisible = isConfettiVisible;
+    });
+  },
   dialogs: {
     teamDialog: {
       isOpen: false,

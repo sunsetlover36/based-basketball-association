@@ -75,3 +75,15 @@ export const getLeaderboard = async (): Promise<Leaderboard> => {
   const data = await api.get(`${userUrls.LEADERBOARD}`).json<Leaderboard>();
   return data;
 };
+
+export const shareSocials = async () => {
+  await api.post(userUrls.SHARE);
+};
+
+export const getBoost = async (type: 'og' | 'coach') => {
+  await api.post(userUrls.BOOST, {
+    json: {
+      type,
+    },
+  });
+};

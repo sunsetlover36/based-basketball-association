@@ -2,6 +2,7 @@ import { lightTheme, ConnectButton as TwConnectButton } from 'thirdweb/react';
 
 import { thirdwebClient } from '@/lib/thirdweb';
 import { doLogin, doLogout, getLoginPayload, isLoggedIn } from '@/lib/api';
+import { sepolia } from 'thirdweb/chains';
 
 export const ConnectButton = () => {
   return (
