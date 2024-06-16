@@ -388,15 +388,15 @@ export const TeamPlayer = () => {
           <div className="border-b-2 border-blue-600 pb-4 mb-4">
             <h2 className="text-2xl">Training Camp</h2>
             <p className="mb-2">
-              {traits.stamina >= 50 &&
-                (lastTraining && trainingMode !== null
-                  ? `Training session is set for ${
-                      TRAINING_MODE_MAP[
-                        trainingMode as keyof typeof TRAINING_MODE_MAP
-                      ].label
-                    }.`
-                  : 'No training session is set for this player. You can set one.')}
+              {lastTraining && trainingMode !== null
+                ? `Training session is set for ${
+                    TRAINING_MODE_MAP[
+                      trainingMode as keyof typeof TRAINING_MODE_MAP
+                    ].label
+                  }.`
+                : 'No training session is set for this player. You can set one.'}
               {traits.stamina < 50 &&
+                isLastTrainingEnded &&
                 'Player is too tired to set training session.'}
             </p>
             <div className="grid grid-cols-5 gap-2">
@@ -440,7 +440,7 @@ export const TeamPlayer = () => {
                         lastTraining &&
                         lastTraining.mode === value &&
                         formattedDuration && (
-                          <p className="text-xs xl:text-sm">
+                          <p className="text-xs xl:text-sm text-center">
                             {formattedDuration} remaining
                           </p>
                         )}
