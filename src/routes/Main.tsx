@@ -6,7 +6,7 @@ import { useDialog } from '@/store';
 import { Button } from '@/components';
 import { useActiveAccount } from 'thirdweb/react';
 import { DialogName } from '@/store/ui/types';
-import { useUser } from '@/lib/queryClient';
+import { useHasTeam, useUser } from '@/lib/queryClient';
 import toast from 'react-hot-toast';
 
 export const Main = () => {
@@ -16,8 +16,9 @@ export const Main = () => {
 
   const [currentPlayer, setCurrentPlayer] = useState(0);
 
-  const { data: user } = useUser();
   const account = useActiveAccount();
+  const { data: user } = useUser();
+  const { data: hasTeam } = useHasTeam(account?.address);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,6 +31,7 @@ export const Main = () => {
   const paragraphClassName =
     'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] lg:w-[60%] 2xl:w-[50%] mx-auto mt-2 !leading-5 2xl:!leading-7';
 
+  const isTeamVisible = hasTeam && user && account;
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="text-center uppercase">
@@ -61,7 +63,7 @@ export const Main = () => {
         </p>
       </div>
 
-      {(!account || !user?.team) && (
+      {!isTeamVisible && (
         <div className="flex justify-center items-center mt-8">
           <Button
             onClick={() =>

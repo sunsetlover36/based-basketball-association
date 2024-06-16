@@ -1,4 +1,4 @@
-import { type ChangeEvent, useMemo, useState } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,10 +7,16 @@ import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import { Navigate } from 'react-router-dom';
 import { Upload } from 'lucide-react';
+import {
+  useActiveWalletChain,
+  useSwitchActiveWalletChain,
+} from 'thirdweb/react';
+import { baseSepolia } from 'thirdweb/chains';
+import toast from 'react-hot-toast';
 
 import { useUser } from '@/lib/queryClient';
 import { Button, Input, Loader } from '@/components';
-import { cn } from '@/lib/utils';
+import { cn, isValidChain } from '@/lib/utils';
 import { useReadContracts } from 'wagmi';
 import { teamsContract } from '@/lib/contracts';
 import { CreateTeamPhase } from '@/types';
@@ -18,7 +24,9 @@ import { useDialog, useStore } from '@/store';
 import { DialogName } from '@/store/ui/types';
 
 export const createTeamSchema = z.object({
-  teamName: z.string().min(1, { message: 'Team name is required' }),
+  teamName: z.string().min(1, { message: 'Team name is required' }).max(24, {
+    message: 'Team name is too long',
+  }),
   teamLogo: z
     .instanceof(FileList)
     .refine((files) => files.length === 1, 'Team logo is required')
@@ -28,9 +36,12 @@ export const createTeamSchema = z.object({
     ),
   playerFullName: z
     .string()
-    .min(1, { message: 'Player full name is required' }),
+    .min(1, { message: 'Player full name is required' })
+    .max(28, { message: 'Player full name is too long' }),
   playerNumber: z.string(),
-  playerNickname: z.string(),
+  playerNickname: z
+    .string()
+    .max(16, { message: 'Player nickname is too long' }),
   playerCountry: z
     .object({
       label: z.string(),
@@ -96,7 +107,10 @@ const getPhaseDetails = (
   }
 };
 export const CreateTeam = () => {
-  const { data: user } = useUser();
+  const chainId = useActiveWalletChain()?.id;
+  const switchNetwork = useSwitchActiveWalletChain();
+  const { data: user, isLoading: isUserLoading, error: userError } = useUser();
+
   const { setTeamData } = useStore();
   const { toggle: toggleConfirmTeamDialog } = useDialog(
     DialogName.CONFIRM_TEAM_DIALOG
@@ -179,6 +193,12 @@ export const CreateTeam = () => {
   const teamName = watch('teamName');
   const teamLogo = watch('teamLogo');
 
+  useEffect(() => {
+    if (!isValidChain(chainId)) {
+      toggleConfirmTeamDialog(false);
+    }
+  }, [chainId]);
+
   const onSubmit: SubmitHandler<z.infer<typeof createTeamSchema>> = async (
     data
   ) => {
@@ -204,14 +224,21 @@ export const CreateTeam = () => {
     }
   };
 
+  if (userError) {
+    toast.error('Something went wrong!', {
+      id: 'create-team-user-error',
+      icon: '🚨',
+    });
+    return <Navigate to="/" replace={true} />;
+  }
+  if (!formattedTeamsData || isUserLoading) {
+    return <Loader size={69} className="mx-auto" />;
+  }
   if (!user) {
-    return null;
+    return <Navigate to="/" replace={true} />;
   }
   if (user.team) {
     return <Navigate to={`/${user.address}/team`} replace={true} />;
-  }
-  if (!formattedTeamsData) {
-    return <Loader size={69} className="mx-auto" />;
   }
 
   const { createdTeams, maxTeams } = getPhaseDetails(
@@ -375,6 +402,12 @@ export const CreateTeam = () => {
                 <Button
                   disabled={!teamName || !teamLogo}
                   onClick={(e) => {
+                    if (!isValidChain(chainId)) {
+                      e.preventDefault();
+                      switchNetwork(baseSepolia);
+                      return;
+                    }
+
                     if (step === 1) {
                       handleSubmit(onSubmit);
                     } else {
@@ -383,7 +416,11 @@ export const CreateTeam = () => {
                     }
                   }}
                 >
-                  {step === 0 ? 'Next' : 'Create!'}
+                  {isValidChain(chainId)
+                    ? step === 0
+                      ? 'Next'
+                      : 'Create!'
+                    : 'Switch Network'}
                 </Button>
               </div>
             </form>

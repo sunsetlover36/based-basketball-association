@@ -132,6 +132,33 @@ export const TeamPlayer = () => {
   };
 
   useEffect(() => {
+    let trainingCheckInterval: NodeJS.Timeout | null = null;
+    const lastTraining = player?.trainings[player?.trainings.length - 1];
+    if (lastTraining) {
+      const lastTrainingEndDate = new Date(lastTraining.endDate).getTime();
+
+      if (lastTrainingEndDate > Date.now()) {
+        trainingCheckInterval = setInterval(() => {
+          if (lastTrainingEndDate < new Date().getTime()) {
+            setTrainingMode(null);
+            queryClient.invalidateQueries({
+              queryKey: ['user'],
+            });
+            queryClient.invalidateQueries({
+              queryKey: ['team', address],
+            });
+          }
+        }, 1000);
+      }
+    }
+
+    return () => {
+      if (trainingCheckInterval) {
+        clearInterval(trainingCheckInterval);
+      }
+    };
+  }, [trainingMode, player]);
+  useEffect(() => {
     if (player && !isLastTrainingEnded) {
       setTrainingMode(lastTraining!.mode);
     }
@@ -177,7 +204,17 @@ export const TeamPlayer = () => {
     : true;
 
   const traitsArr = Object.entries(traits).filter(([key]) => key !== '_id');
-  const trainingDisabled = !isLastTrainingEnded || account?.address !== address;
+  const trainingDisabled =
+    !isLastTrainingEnded || account?.address !== address || traits.stamina < 50;
+  const formattedDuration = formatToDuration(
+    new Date().toISOString(),
+    lastTraining?.endDate
+  );
+
+  console.table({
+    isLastTrainingEnded,
+    stamina: traits.stamina,
+  });
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -290,7 +327,9 @@ export const TeamPlayer = () => {
                               wrapperClassName="mt-2"
                               className={progressBg}
                               potentialProgress={
-                                isLastTrainingEnded && trainingMode !== null
+                                value >= 50 &&
+                                isLastTrainingEnded &&
+                                trainingMode !== null
                                   ? -50
                                   : 0
                               }
@@ -305,58 +344,60 @@ export const TeamPlayer = () => {
                     );
                   })}
               </div>
-              <div>
-                <h3 className="text-xl -mb-1">Fans</h3>
-                {lastTraining && !isLastTrainingEnded ? (
-                  <div className="flex items-center">
-                    <p className="text-blue-600 text-3xl">
-                      {lastTraining.fans.length}
-                    </p>
-                    <Button
-                      data-tooltip-id="cheer"
-                      data-tooltip-content="Cheer gives you 50 points"
-                      className="ml-4"
-                      size="sm"
-                      onClick={onCheerPlayer}
-                    >
-                      Cheer
-                    </Button>
-                    {account?.address !== address && address && (
-                      <div className="relative">
-                        {!lastTraining.fans.includes(address) && !isCheered && (
-                          <Button
-                            className="ml-4"
-                            size="sm"
-                            onClick={onCheerPlayer}
-                          >
-                            Cheer
-                          </Button>
-                        )}
-                        {showPoints && (
-                          <div className="point-animation absolute -top-8 text-blue-600 whitespace-nowrap">
-                            +50 points
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="text-blue-600">Start training to get fans!</p>
-                )}
-              </div>
+              {(lastTraining && !isLastTrainingEnded
+                ? true
+                : account?.address === address) && (
+                <div>
+                  <h3 className="text-xl -mb-1">Fans</h3>
+                  {lastTraining && !isLastTrainingEnded ? (
+                    <div className="flex items-center">
+                      <p className="text-blue-600 text-3xl">
+                        {lastTraining.fans.length}
+                      </p>
+                      {account?.address !== address && address && (
+                        <div className="relative">
+                          {user?.team &&
+                            !lastTraining.fans.includes(address) &&
+                            !isCheered && (
+                              <Button
+                                data-tooltip-id="cheer"
+                                data-tooltip-content="Cheer gives you 50 points"
+                                className="ml-4"
+                                size="sm"
+                                onClick={onCheerPlayer}
+                              >
+                                Cheer
+                              </Button>
+                            )}
+                          {showPoints && (
+                            <div className="point-animation absolute -top-8 text-blue-600 whitespace-nowrap">
+                              +50 points
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-blue-600">Start training to get fans!</p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
           <div className="border-b-2 border-blue-600 pb-4 mb-4">
             <h2 className="text-2xl">Training Camp</h2>
             <p className="mb-2">
-              {lastTraining && trainingMode !== null
-                ? `Training session is set for ${
-                    TRAINING_MODE_MAP[
-                      trainingMode as keyof typeof TRAINING_MODE_MAP
-                    ].label
-                  }.`
-                : 'No training session is set for this player. You can set one.'}
+              {traits.stamina >= 50 &&
+                (lastTraining && trainingMode !== null
+                  ? `Training session is set for ${
+                      TRAINING_MODE_MAP[
+                        trainingMode as keyof typeof TRAINING_MODE_MAP
+                      ].label
+                    }.`
+                  : 'No training session is set for this player. You can set one.')}
+              {traits.stamina < 50 &&
+                'Player is too tired to set training session.'}
             </p>
             <div className="grid grid-cols-5 gap-2">
               {Object.values(PlayerTrainingMode)
@@ -397,13 +438,10 @@ export const TeamPlayer = () => {
                       <p>{label}</p>
                       {!isLastTrainingEnded &&
                         lastTraining &&
-                        lastTraining.mode === value && (
+                        lastTraining.mode === value &&
+                        formattedDuration && (
                           <p className="text-xs xl:text-sm">
-                            {formatToDuration(
-                              new Date().toISOString(),
-                              lastTraining.endDate
-                            )}{' '}
-                            remaining
+                            {formattedDuration} remaining
                           </p>
                         )}
                     </div>

@@ -60,7 +60,11 @@ export const ConfirmTeamDialog = () => {
       await queryClient.invalidateQueries({
         queryKey: ['team', account!.address],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ['hasTeam', account!.address],
+      });
       setTeamData(null);
+      toggle(true);
       setIsTeamCreated(true);
       toggleConfetti(true);
 
@@ -91,6 +95,12 @@ export const ConfirmTeamDialog = () => {
     await shareSocials();
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      setIsTeamCreated(false);
+      setTeamData(null);
+    }
+  }, [isOpen]);
   useEffect(() => {
     if (createTxReceipt.data && createTxReceipt.data.status === 'success') {
       console.log('WHY YOU CREATE', createTxReceipt.data);
@@ -166,9 +176,7 @@ export const ConfirmTeamDialog = () => {
     <Modal
       showModal={isOpen}
       close={() => {
-        if (!isLoading) {
-          toggle(false);
-        }
+        toggle(false);
       }}
       title={isTeamCreated ? 'Team Created 🎉' : 'Creating Team'}
       fixedButton

@@ -46,7 +46,7 @@
   }
 
   .tw-connect-wrapper > button {
-    @apply rounded-md shadow-sm shadow-gray-600 px-4 py-1 text-base md:text-lg;
+    @apply rounded-md shadow-sm shadow-gray-600 px-4 py-1 text-base md:text-lg xl:min-h-9;
   }
 
   @keyframes moveUp {

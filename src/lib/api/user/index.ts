@@ -87,3 +87,14 @@ export const getBoost = async (type: 'og' | 'coach') => {
     },
   });
 };
+
+export const hasTeam = async (address: string): Promise<boolean> => {
+  const data = await api
+    .get(userUrls.HAS_TEAM, {
+      searchParams: {
+        address,
+      },
+    })
+    .json<boolean>();
+  return data;
+};

@@ -1,8 +1,11 @@
 import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { intervalToDuration } from 'date-fns';
+import { baseSepolia } from 'thirdweb/chains';
 
 import { PlayerTraits, PlayerSpecialTrait, PlayerTrainingMode } from '@/types';
+
+export const isValidChain = (chainId?: number) => chainId === baseSepolia.id;
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -121,16 +124,22 @@ export const formatAggression = (aggression: number) => {
 export const shortenAddress = (address?: string) =>
   address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
 
-export const formatToDuration = (startDate: string, endDate: string) => {
+export const formatToDuration = (startDate: string, endDate?: string) => {
+  if (!endDate) {
+    return '';
+  }
+
   const duration = intervalToDuration({
     start: new Date(startDate),
     end: new Date(endDate),
   });
 
   const parts = [];
-  if (duration.days) parts.push(`${duration.days} day`);
-  if (duration.hours) parts.push(`${duration.hours}h`);
-  if (duration.minutes) parts.push(`${duration.minutes}m`);
+  if (duration.days) parts.push(`${duration.days} d`);
+  if (duration.hours)
+    parts.push(`${duration.hours} ${duration.hours > 1 ? 'hrs' : 'hr'}`);
+  if (duration.minutes) parts.push(`${duration.minutes} min`);
+  if (duration.seconds) parts.push(`${duration.seconds} sec`);
 
   // If both days and hours are zero, show only minutes
   if (parts.length === 0 && duration.minutes === 0) {

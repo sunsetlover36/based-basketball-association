@@ -1,11 +1,12 @@
-import { type FC, type ReactNode } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useEffect, type FC, type ReactNode } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import { Tooltip } from 'react-tooltip';
+import { useActiveWalletChain } from 'thirdweb/react';
 
-import { cn } from '@/lib/utils';
+import { cn, isValidChain } from '@/lib/utils';
 import { useStore } from '@/store';
 
 import { Header } from './header';
@@ -23,11 +24,21 @@ interface WrapperProps {
 export const Wrapper: FC<WrapperProps> = ({ children }) => {
   const { pathname } = useLocation();
   const windowSize = useWindowSize();
+  const chainId = useActiveWalletChain()?.id;
   const { isConfettiVisible } = useStore();
 
   const isCenteredContent = !['/team', '/leaderboard', '/invite'].some((path) =>
     pathname.includes(path)
   );
+
+  useEffect(() => {
+    if (chainId && !isValidChain(chainId)) {
+      toast.error('Please switch to Base Sepolia network!', {
+        id: 'wrong-network-error',
+        icon: '⛓️',
+      });
+    }
+  }, [chainId]);
 
   return (
     <>

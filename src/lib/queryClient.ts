@@ -1,13 +1,15 @@
 import { QueryClient, useQuery } from '@tanstack/react-query';
-import { getLeaderboard, getTeam, getUser } from '@/lib/api';
+
+import { getLeaderboard, getTeam, getUser, hasTeam } from '@/lib/api';
 
 export const queryClient = new QueryClient();
 
-export const USER_QUERY = {
-  queryKey: ['user'],
-  queryFn: getUser,
-};
-export const useUser = () => useQuery(USER_QUERY);
+export const useUser = () =>
+  useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(),
+    retry: false,
+  });
 
 export const useTeam = (address?: string) =>
   useQuery({
@@ -21,3 +23,10 @@ export const LEADERBOARD_QUERY = {
   queryFn: getLeaderboard,
 };
 export const useLeaderboard = () => useQuery(LEADERBOARD_QUERY);
+
+export const useHasTeam = (address?: string) =>
+  useQuery({
+    queryKey: ['hasTeam', address],
+    queryFn: () => hasTeam(address!),
+    enabled: !!address,
+  });

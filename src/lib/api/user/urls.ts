@@ -10,4 +10,5 @@ export const userUrls = {
   LEADERBOARD: 'leaderboard',
   SHARE: 'share',
   BOOST: 'boost',
+  HAS_TEAM: 'has-team',
 };
