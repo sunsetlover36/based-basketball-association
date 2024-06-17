@@ -357,7 +357,7 @@ export const TeamPlayer = () => {
                       {account?.address !== address && address && (
                         <div className="relative">
                           {user?.team &&
-                            !lastTraining.fans.includes(address) &&
+                            !lastTraining.fans.includes(account?.address) &&
                             !isCheered && (
                               <Button
                                 data-tooltip-id="cheer"
