@@ -162,7 +162,7 @@ export const TeamPlayer = () => {
     if (player && !isLastTrainingEnded) {
       setTrainingMode(lastTraining!.mode);
     }
-  }, [player]);
+  }, [team, player, address]);
   useEffect(() => {
     if (trainingMode !== null) {
       boostingInterval = setInterval(() => {
@@ -357,6 +357,7 @@ export const TeamPlayer = () => {
                       {account?.address !== address && address && (
                         <div className="relative">
                           {user?.team &&
+                            account?.address &&
                             !lastTraining.fans.includes(account?.address) &&
                             !isCheered && (
                               <Button
