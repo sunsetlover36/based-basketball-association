@@ -12,7 +12,7 @@ import { Modal, Button, Loader } from '@/components';
 import { queryClient } from '@/lib/queryClient';
 import { DialogName } from '@/store/ui/types';
 import { teamsContract } from '@/lib/contracts';
-import { createTeam, shareSocials } from '@/lib/api';
+import { checkTeamName, createTeam, shareSocials } from '@/lib/api';
 
 export const ConfirmTeamDialog = () => {
   const account = useActiveAccount();
@@ -34,18 +34,36 @@ export const ConfirmTeamDialog = () => {
     setIsLoading(true);
 
     try {
-      const txHash = await writeContractAsync({
-        ...teamsContract,
-        functionName: 'createTeamFCFS',
-        args: [teamData!.teamName],
+      const isTeamExists = await checkTeamName(teamData!.teamName);
+
+      if (!isTeamExists) {
+        try {
+          const txHash = await writeContractAsync({
+            ...teamsContract,
+            functionName: 'createTeamFCFS',
+            args: [teamData!.teamName],
+          });
+          setCreateTx(txHash);
+        } catch (err) {
+          const msg = (err as BaseError).shortMessage.replace(
+            `The contract function "createTeamFCFS" reverted with the following reason:\n`,
+            ''
+          );
+          toast.error(msg, { id: 'error-creation-tx', icon: '❌' });
+          setIsLoading(false);
+        }
+      } else {
+        toast.error('Team already exists!', {
+          id: 'error-creation-tx',
+          icon: '❌',
+        });
+      }
+    } catch {
+      toast.error('Something went wrong!', {
+        id: 'error-creation-tx',
+        icon: '❌',
       });
-      setCreateTx(txHash);
-    } catch (err) {
-      const msg = (err as BaseError).shortMessage.replace(
-        `The contract function "createTeamFCFS" reverted with the following reason:\n`,
-        ''
-      );
-      toast.error(msg, { id: 'error-creation-tx', icon: '❌' });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -105,7 +123,16 @@ export const ConfirmTeamDialog = () => {
   }, [isOpen]);
   useEffect(() => {
     if (createTxReceipt.data && createTxReceipt.data.status === 'success') {
-      processCreationTx();
+      const { status } = createTxReceipt.data;
+      if (status === 'success') {
+        processCreationTx();
+      } else {
+        toast.error('Something went wrong with transaction!', {
+          id: 'tx-error',
+          icon: '❌',
+        });
+        setIsLoading(false);
+      }
     }
   }, [createTxReceipt.data]);
 

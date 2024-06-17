@@ -11,4 +11,5 @@ export const userUrls = {
   SHARE: 'share',
   BOOST: 'boost',
   HAS_TEAM: 'has-team',
+  CHECK_TEAM_NAME: 'check-team-name',
 };

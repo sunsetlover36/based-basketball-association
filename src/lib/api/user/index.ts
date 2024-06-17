@@ -50,6 +50,17 @@ export const getTeam = async (
     .json<Team & { points: number }>();
   return data;
 };
+
+export const checkTeamName = async (name: string): Promise<boolean> => {
+  const data = await api
+    .get(userUrls.CHECK_TEAM_NAME, {
+      searchParams: {
+        name,
+      },
+    })
+    .json<boolean>();
+  return data;
+};
 export const createTeam = async (data: CreateTeamData) => {
   const formData = new FormData();
   for (const [key, value] of Object.entries(data)) {
