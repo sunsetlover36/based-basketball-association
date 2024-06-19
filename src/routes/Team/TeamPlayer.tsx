@@ -395,7 +395,9 @@ export const TeamPlayer = () => {
                       trainingMode as keyof typeof TRAINING_MODE_MAP
                     ].label
                   }.`
-                : 'No training session is set for this player. You can set one.'}
+                : `No training session is set for this player.${
+                    account?.address === address ? ' You can set one.' : ''
+                  }`}
               {traits.stamina < 50 &&
                 isLastTrainingEnded &&
                 'Player is too tired to set training session.'}
