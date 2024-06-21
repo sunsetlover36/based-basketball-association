@@ -1,4 +1,3 @@
-import { base } from 'thirdweb/chains';
 import {
   type VerifyLoginPayloadParams,
   type LoginPayload,
@@ -8,6 +7,7 @@ import { type Leaderboard, type Team, type User } from '@/types';
 import { api } from '../api';
 import { userUrls } from './urls';
 import { CreateTeamData, CheerPlayerData, TrainPlayerData } from './types';
+import { APP_THIRDWEB_CHAIN } from '@/lib/utils';
 
 export const getLoginPayload = async ({
   address,
@@ -18,7 +18,7 @@ export const getLoginPayload = async ({
     .get(userUrls.LOGIN, {
       searchParams: {
         address,
-        chainId: base.id.toString(),
+        chainId: APP_THIRDWEB_CHAIN.id.toString(),
       },
     })
     .json();

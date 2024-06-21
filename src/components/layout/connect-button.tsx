@@ -4,13 +4,13 @@ import {
   useActiveWalletChain,
   useSwitchActiveWalletChain,
 } from 'thirdweb/react';
-import { base } from 'thirdweb/chains';
 import { createWallet, walletConnect } from 'thirdweb/wallets';
 
 import { thirdwebClient } from '@/lib/thirdweb';
 import { doLogin, doLogout, getLoginPayload, isLoggedIn } from '@/lib/api';
 import { Button } from '@/components';
 import { queryClient } from '@/lib/queryClient';
+import { APP_THIRDWEB_CHAIN } from '@/lib/utils';
 
 const wallets = [
   createWallet('com.coinbase.wallet'),
@@ -24,11 +24,11 @@ export const ConnectButton = () => {
 
   return (
     <div className="tw-connect-wrapper">
-      {chainId && chainId !== base.id ? (
+      {chainId && chainId !== APP_THIRDWEB_CHAIN.id ? (
         <Button
           className="bg-red-500"
           onClick={() => {
-            switchChain(base);
+            switchChain(APP_THIRDWEB_CHAIN);
           }}
         >
           Switch Network

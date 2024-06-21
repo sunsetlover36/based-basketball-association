@@ -1,11 +1,18 @@
 import clsx, { type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { intervalToDuration } from 'date-fns';
-import { base } from 'thirdweb/chains';
+import { base as twBase, baseSepolia as twBaseSepolia } from 'thirdweb/chains';
+import { base, baseSepolia } from 'viem/chains';
 
 import { PlayerTraits, PlayerSpecialTrait, PlayerTrainingMode } from '@/types';
 
-export const isValidChain = (chainId?: number) => chainId === base.id;
+export const IS_PROD = import.meta.env.VITE_VERCEL_ENV === 'production';
+export const IS_DEV = import.meta.env.VITE_VERCEL_ENV === 'development';
+
+export const APP_THIRDWEB_CHAIN = IS_PROD ? twBase : twBaseSepolia;
+export const APP_VIEM_CHAIN = IS_PROD ? base : baseSepolia;
+export const isValidChain = (chainId?: number) =>
+  chainId === APP_THIRDWEB_CHAIN.id;
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 

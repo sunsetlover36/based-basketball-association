@@ -6,7 +6,7 @@ import { useWindowSize } from 'react-use';
 import { Tooltip } from 'react-tooltip';
 import { useActiveWalletChain } from 'thirdweb/react';
 
-import { cn, isValidChain } from '@/lib/utils';
+import { APP_THIRDWEB_CHAIN, cn, isValidChain } from '@/lib/utils';
 import { useStore } from '@/store';
 
 import { Header } from './header';
@@ -33,7 +33,7 @@ export const Wrapper: FC<WrapperProps> = ({ children }) => {
 
   useEffect(() => {
     if (chainId && !isValidChain(chainId)) {
-      toast.error('Please switch to Base network!', {
+      toast.error(`Please switch to ${APP_THIRDWEB_CHAIN.name} network!`, {
         id: 'wrong-network-error',
         icon: '⛓️',
       });

@@ -75,9 +75,7 @@ export const TeamPlayer = () => {
   const account = useActiveAccount();
   const { data: user } = useUser();
   const { data: team, error, isLoading } = useTeam(address);
-
   const { trainingMode, setTrainingMode } = useStore();
-
   const { isOpen: isConfirmTrainingOpen, toggle: toggleConfirmTraining } =
     useDialog(DialogName.CONFIRM_TRAINING_DIALOG);
 
@@ -88,13 +86,22 @@ export const TeamPlayer = () => {
   const player = useMemo(() => {
     return team?.players[Number(playerIndex) - 1];
   }, [team, playerIndex]);
-  const hasOgBoost = useMemo(() => {
-    const ogBoost = user?.boosts.find((b) => b.type === 'og');
-    return ogBoost && !ogBoost.claimed;
-  }, [user]);
-  const hasCoachBoost = useMemo(() => {
-    const coachBoost = user?.boosts.find((b) => b.type === 'coach');
-    return coachBoost && !coachBoost.claimed;
+  const { hasBoosts, hasOgBoost, hasCoachBoost } = useMemo(() => {
+    const hasBoosts =
+      user?.boosts && user.boosts.filter((boost) => !boost.claimed).length > 0;
+
+    if (hasBoosts) {
+      const ogBoost = user.boosts.find((b) => b.boostType === 'og');
+      const coachBoost = user.boosts.find((b) => b.boostType === 'coach');
+
+      return {
+        hasBoosts,
+        hasOgBoost: ogBoost && !ogBoost.claimed,
+        hasCoachBoost: coachBoost && !coachBoost.claimed,
+      };
+    }
+
+    return { hasBoosts, hasOgBoost: false, hasCoachBoost: false };
   }, [user]);
 
   const onCheerPlayer = async () => {
@@ -141,12 +148,15 @@ export const TeamPlayer = () => {
         trainingCheckInterval = setInterval(() => {
           if (lastTrainingEndDate < new Date().getTime()) {
             setTrainingMode(null);
-            queryClient.invalidateQueries({
-              queryKey: ['user'],
-            });
-            queryClient.invalidateQueries({
-              queryKey: ['team', address],
-            });
+
+            setTimeout(() => {
+              queryClient.invalidateQueries({
+                queryKey: ['user'],
+              });
+              queryClient.invalidateQueries({
+                queryKey: ['team', address],
+              });
+            }, 1000);
           }
         }, 1000);
       }
@@ -160,7 +170,10 @@ export const TeamPlayer = () => {
   }, [trainingMode, player]);
   useEffect(() => {
     if (player && !isLastTrainingEnded) {
+      console.log('SET LAST TRAINING');
       setTrainingMode(lastTraining!.mode);
+    } else {
+      setTrainingMode(null);
     }
   }, [team, player, address]);
   useEffect(() => {
@@ -211,10 +224,6 @@ export const TeamPlayer = () => {
     lastTraining?.endDate
   );
 
-  console.table({
-    isLastTrainingEnded,
-    stamina: traits.stamina,
-  });
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -459,31 +468,29 @@ export const TeamPlayer = () => {
               </p>
             )}
 
-            {address === account?.address &&
-              user?.boosts &&
-              user.boosts.length > 0 && (
-                <div className="mt-4">
-                  <h2 className="text-2xl mb-1">Secret Menu</h2>
-                  <div className="flex gap-x-2">
-                    {hasOgBoost && (
-                      <Button
-                        className="secret-button-gradient"
-                        onClick={() => onBoostPlayer('og')}
-                      >
-                        OG Boost
-                      </Button>
-                    )}
-                    {hasCoachBoost && (
-                      <Button
-                        className="secret-button-gradient"
-                        onClick={() => onBoostPlayer('coach')}
-                      >
-                        Coach Boost
-                      </Button>
-                    )}
-                  </div>
+            {address === account?.address && hasBoosts && (
+              <div className="mt-4">
+                <h2 className="text-2xl mb-1">Secret Menu</h2>
+                <div className="flex gap-x-2">
+                  {hasOgBoost && (
+                    <Button
+                      className="secret-button-gradient"
+                      onClick={() => onBoostPlayer('og')}
+                    >
+                      OG Boost
+                    </Button>
+                  )}
+                  {hasCoachBoost && (
+                    <Button
+                      className="secret-button-gradient"
+                      onClick={() => onBoostPlayer('coach')}
+                    >
+                      Coach Boost
+                    </Button>
+                  )}
                 </div>
-              )}
+              </div>
+            )}
           </div>
 
           <div>

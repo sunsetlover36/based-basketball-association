@@ -1,9 +1,9 @@
 import { createConfig, http } from 'wagmi';
-import { base } from 'wagmi/chains';
+import { APP_VIEM_CHAIN } from './utils';
 
 export const wagmiConfig = createConfig({
-  chains: [base],
+  chains: [APP_VIEM_CHAIN],
   transports: {
-    [base.id]: http(),
-  },
+    [APP_VIEM_CHAIN.id]: http(),
+  } as any,
 });

@@ -11,12 +11,11 @@ import {
   useActiveWalletChain,
   useSwitchActiveWalletChain,
 } from 'thirdweb/react';
-import { base } from 'thirdweb/chains';
 import toast from 'react-hot-toast';
 
 import { useUser } from '@/lib/queryClient';
 import { Button, Input, Loader } from '@/components';
-import { cn, isValidChain } from '@/lib/utils';
+import { APP_THIRDWEB_CHAIN, cn, isValidChain } from '@/lib/utils';
 import { useReadContracts } from 'wagmi';
 import { teamsContract } from '@/lib/contracts';
 import { CreateTeamPhase } from '@/types';
@@ -148,6 +147,7 @@ export const CreateTeam = () => {
       },
     ],
   });
+  console.log(teamsData);
   const formattedTeamsData = useMemo(
     () =>
       teamsData
@@ -404,7 +404,7 @@ export const CreateTeam = () => {
                   onClick={(e) => {
                     if (!isValidChain(chainId)) {
                       e.preventDefault();
-                      switchNetwork(base);
+                      switchNetwork(APP_THIRDWEB_CHAIN);
                       return;
                     }
 

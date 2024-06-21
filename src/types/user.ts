@@ -56,7 +56,7 @@ export interface Team {
   players: Player[];
 }
 export interface UserBoost {
-  type: 'og' | 'coach';
+  boostType: 'og' | 'coach';
   claimed: boolean;
 }
 export interface User {
