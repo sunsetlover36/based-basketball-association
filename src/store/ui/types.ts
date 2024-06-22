@@ -6,6 +6,7 @@ export enum DialogName {
   NEW_MATCH_DIALOG = 'newMatchDialog',
   CONFIRM_TRAINING_DIALOG = 'confirmTrainingDialog',
   CONFIRM_TEAM_DIALOG = 'confirmTeamDialog',
+  EDIT_LOGO_DIALOG = 'editLogoDialog',
 }
 
 interface Dialog {

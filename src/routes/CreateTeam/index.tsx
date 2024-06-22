@@ -28,9 +28,13 @@ export const createTeamSchema = z.object({
   }),
   teamLogo: z
     .instanceof(FileList)
-    .refine((files) => files.length === 1, 'Team logo is required')
+    .nullable()
     .refine(
-      (files) => files[0]?.type.startsWith('image/'),
+      (files) => files !== null && files.length === 1,
+      'Team logo is required'
+    )
+    .refine(
+      (files) => files !== null && files[0]?.type.startsWith('image/'),
       'Must be an image file'
     ),
   playerFullName: z
@@ -147,7 +151,7 @@ export const CreateTeam = () => {
       },
     ],
   });
-  console.log(teamsData);
+
   const formattedTeamsData = useMemo(
     () =>
       teamsData
@@ -186,13 +190,31 @@ export const CreateTeam = () => {
     formState: { errors },
     control,
     watch,
+    reset,
     setValue,
   } = useForm<z.infer<typeof createTeamSchema>>({
     resolver: zodResolver(createTeamSchema),
+    defaultValues: {
+      teamName: '',
+      teamLogo: null,
+      playerFullName: '',
+      playerNumber: '',
+      playerNickname: '',
+      playerCountry: {
+        label: '',
+        value: '',
+      },
+    },
   });
   const teamName = watch('teamName');
   const teamLogo = watch('teamLogo');
 
+  useEffect(() => {
+    return () => {
+      reset();
+      setTeamData(null);
+    };
+  }, []);
   useEffect(() => {
     if (!isValidChain(chainId)) {
       toggleConfirmTeamDialog(false);
@@ -207,7 +229,7 @@ export const CreateTeam = () => {
 
       const teamData = {
         ...data,
-        teamLogo: data.teamLogo[0], // Access the first file
+        teamLogo: data.teamLogo![0], // Access the first file
         playerCountry: data.playerCountry!.value,
       };
       setTeamData(teamData);

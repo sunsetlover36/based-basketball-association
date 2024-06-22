@@ -4,13 +4,16 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { useTeam } from '@/lib/queryClient';
 import { Players } from './Players';
-import { Loader } from '@/components';
+import { Button, Loader } from '@/components';
 import { useActiveAccount } from 'thirdweb/react';
+import { DialogName } from '@/store/ui/types';
+import { useDialog } from '@/store';
 
 export const Team = () => {
   const account = useActiveAccount();
   const { address } = useParams();
   const { data: team, error, isLoading } = useTeam(address);
+  const { toggle: toggleEditLogo } = useDialog(DialogName.EDIT_LOGO_DIALOG);
 
   if (isLoading) {
     return <Loader size={100} className="mx-auto" />;
@@ -50,13 +53,16 @@ export const Team = () => {
           <div className="mb-2 w-full h-52 rounded-lg flex flex-col items-center justify-center">
             <img
               src={`${import.meta.env.VITE_API_URL}/assets${logo}`}
-              className="w-32 h-32 rounded-lg mb-1"
+              className="w-32 h-32 rounded-lg mb-1 cursor-pointer transition-opacity hover:opacity-80"
+              onClick={() => toggleEditLogo(true)}
             />
             <h2 className="text-4xl mb-2">
               Team <span className="text-blue-600">{name}</span> Camp
             </h2>
-            <div className="border-2 border-blue-600 rounded-lg px-2 py-1">
-              <span className="text-sm">🏀</span> {points} Points
+            <div className="flex items-center">
+              <div className="border-2 border-blue-600 rounded-lg px-2 py-1 mr-4">
+                <span className="text-sm">🏀</span> {points} Points
+              </div>
             </div>
           </div>
         </div>

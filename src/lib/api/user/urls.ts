@@ -12,4 +12,5 @@ export const userUrls = {
   BOOST: 'boost',
   HAS_TEAM: 'has-team',
   CHECK_TEAM_NAME: 'check-team-name',
+  EDIT_TEAM_LOGO: 'edit-team-logo',
 };

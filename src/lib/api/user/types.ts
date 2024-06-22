@@ -18,3 +18,7 @@ export interface CheerPlayerData {
   playerId: string;
   address: string;
 }
+
+export interface EditTeamLogoData {
+  teamLogo: File;
+}

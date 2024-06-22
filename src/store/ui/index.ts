@@ -69,5 +69,13 @@ export const createUIStore: WithImmer<UIStore> = (set) => ({
         });
       },
     },
+    editLogoDialog: {
+      isOpen: false,
+      toggle: (isOpen) => {
+        set((store) => {
+          store.dialogs.editLogoDialog.isOpen = isOpen;
+        });
+      },
+    },
   },
 });

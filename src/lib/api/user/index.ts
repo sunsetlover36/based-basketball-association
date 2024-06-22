@@ -6,7 +6,12 @@ import {
 import { type Leaderboard, type Team, type User } from '@/types';
 import { api } from '../api';
 import { userUrls } from './urls';
-import { CreateTeamData, CheerPlayerData, TrainPlayerData } from './types';
+import {
+  CreateTeamData,
+  CheerPlayerData,
+  TrainPlayerData,
+  EditTeamLogoData,
+} from './types';
 import { APP_THIRDWEB_CHAIN } from '@/lib/utils';
 
 export const getLoginPayload = async ({
@@ -108,4 +113,15 @@ export const hasTeam = async (address: string): Promise<boolean> => {
     })
     .json<boolean>();
   return data;
+};
+
+export const editTeamLogo = async (data: EditTeamLogoData) => {
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(data)) {
+    formData.append(key, value);
+  }
+
+  await api.post(userUrls.EDIT_TEAM_LOGO, {
+    body: formData,
+  });
 };

@@ -16,6 +16,7 @@ import {
   ConfirmTrainingDialog,
   TeamDialog,
   TraitsDialog,
+  EditLogoDialog,
 } from './dialogs';
 
 interface WrapperProps {
@@ -61,6 +62,7 @@ export const Wrapper: FC<WrapperProps> = ({ children }) => {
       <TraitsDialog />
       <ConfirmTrainingDialog />
       <ConfirmTeamDialog />
+      <EditLogoDialog />
 
       <Toaster />
       <Tooltip id="cheer" />
