@@ -55,6 +55,7 @@ export const Team = () => {
           <div className="mb-2 w-full h-52 rounded-lg flex flex-col items-center justify-center">
             <img
               src={`${import.meta.env.VITE_API_URL}/assets${logo}`}
+              alt={`Logo of ${name}`}
               className={cn(
                 'w-32 h-32 rounded-lg mb-1 transition-opacity',
                 isTeamOwner && 'cursor-pointer hover:opacity-80'
