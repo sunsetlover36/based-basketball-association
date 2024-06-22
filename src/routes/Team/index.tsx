@@ -8,6 +8,7 @@ import { Loader } from '@/components';
 import { useActiveAccount } from 'thirdweb/react';
 import { DialogName } from '@/store/ui/types';
 import { useDialog } from '@/store';
+import { cn } from '@/lib/utils';
 
 export const Team = () => {
   const account = useActiveAccount();
@@ -42,6 +43,7 @@ export const Team = () => {
   }
 
   const { logo, name, points } = team;
+  const isTeamOwner = account?.address === address;
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -53,8 +55,11 @@ export const Team = () => {
           <div className="mb-2 w-full h-52 rounded-lg flex flex-col items-center justify-center">
             <img
               src={`${import.meta.env.VITE_API_URL}/assets${logo}`}
-              className="w-32 h-32 rounded-lg mb-1 cursor-pointer transition-opacity hover:opacity-80"
-              onClick={() => toggleEditLogo(true)}
+              className={cn(
+                'w-32 h-32 rounded-lg mb-1 transition-opacity',
+                isTeamOwner && 'cursor-pointer hover:opacity-80'
+              )}
+              onClick={() => isTeamOwner && toggleEditLogo(true)}
             />
             <h2 className="text-4xl mb-2">
               Team <span className="text-blue-600">{name}</span> Camp
