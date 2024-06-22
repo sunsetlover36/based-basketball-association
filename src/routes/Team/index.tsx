@@ -4,7 +4,7 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { useTeam } from '@/lib/queryClient';
 import { Players } from './Players';
-import { Button, Loader } from '@/components';
+import { Loader } from '@/components';
 import { useActiveAccount } from 'thirdweb/react';
 import { DialogName } from '@/store/ui/types';
 import { useDialog } from '@/store';
