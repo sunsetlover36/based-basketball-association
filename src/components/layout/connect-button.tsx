@@ -36,6 +36,11 @@ export const ConnectButton = () => {
       ) : (
         <TwConnectButton
           client={thirdwebClient}
+          accountAbstraction={{
+            chain: APP_THIRDWEB_CHAIN,
+            sponsorGas: true,
+            factoryAddress: '0x3e2bC5fBB09D698447e0cF70Fa2e42Ba56bCC5eB',
+          }}
           wallets={wallets}
           theme={lightTheme({
             colors: { primaryButtonBg: '#2563EB' },

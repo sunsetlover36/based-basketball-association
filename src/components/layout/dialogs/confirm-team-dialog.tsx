@@ -5,14 +5,16 @@ import {
   useWriteContract,
 } from 'wagmi';
 import toast from 'react-hot-toast';
-import { useActiveAccount } from 'thirdweb/react';
+import { TransactionButton, useActiveAccount } from 'thirdweb/react';
+import { claimTo } from 'thirdweb/extensions/erc721';
 
 import { useDialog, useStore } from '@/store';
 import { Modal, Button, Loader } from '@/components';
 import { queryClient } from '@/lib/queryClient';
 import { DialogName } from '@/store/ui/types';
-import { teamsContract } from '@/lib/contracts';
+import { teamsContract, twTeamsContract } from '@/lib/contracts';
 import { checkTeamName, createTeam, shareSocials } from '@/lib/api';
+import { prepareContractCall, sendTransaction } from 'thirdweb';
 
 export const ConfirmTeamDialog = () => {
   const account = useActiveAccount();
@@ -210,9 +212,36 @@ export const ConfirmTeamDialog = () => {
       fixedButton
       buttons={
         !isTeamCreated && (
-          <Button className="ml-4" disabled={isLoading} onClick={onCreateTeam}>
-            Create
-          </Button>
+          <>
+            <Button
+              className="ml-4"
+              disabled={isLoading}
+              onClick={onCreateTeam}
+            >
+              Create
+            </Button>
+            <TransactionButton
+              transaction={async () => {
+                const tx = prepareContractCall({
+                  contract: twTeamsContract,
+                  method: 'function createTeamFCFS(string _teamName)',
+                  params: [teamData!.teamName],
+                });
+                return tx;
+              }}
+              onTransactionSent={(result) => {
+                console.log('Transaction submitted', result.transactionHash);
+              }}
+              onTransactionConfirmed={(receipt) => {
+                console.log('Transaction confirmed', receipt.transactionHash);
+              }}
+              onError={(error) => {
+                console.error('Transaction error', error);
+              }}
+            >
+              Create (Abstraction)
+            </TransactionButton>
+          </>
         )
       }
     >

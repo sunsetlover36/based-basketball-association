@@ -1,3 +1,3 @@
 export { nftContract } from './nft';
 export { gameContract } from './game';
-export { teamsContract } from './teams';
+export { teamsContract, twTeamsContract } from './teams';
