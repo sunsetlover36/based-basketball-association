@@ -171,7 +171,6 @@ export const TeamPlayer = () => {
   }, [trainingMode, player]);
   useEffect(() => {
     if (player && !isLastTrainingEnded) {
-      console.log('SET LAST TRAINING');
       setTrainingMode(lastTraining!.mode);
     } else {
       setTrainingMode(null);
@@ -216,7 +215,7 @@ export const TeamPlayer = () => {
   const isLastTrainingEnded = lastTraining?.endDate
     ? new Date(lastTraining?.endDate).getTime() <= Date.now()
     : true;
-  console.log(lastTraining, isLastTrainingEnded);
+
   const traitsArr = Object.entries(traits).filter(([key]) => key !== '_id');
   const trainingDisabled =
     !isLastTrainingEnded || account?.address !== address || traits.stamina < 50;
