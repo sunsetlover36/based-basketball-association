@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useActiveAccount } from 'thirdweb/react';
+import { format } from 'date-fns';
 
 import { PlayerTrainingMode, type PlayerTraits } from '@/types';
 import { Button, Loader, Progress } from '@/components';
@@ -16,8 +19,6 @@ import { DialogName } from '@/store/ui/types';
 import { cheerPlayer, getBoost } from '@/lib/api';
 import { queryClient, useTeam, useUser } from '@/lib/queryClient';
 import { Player } from './Players';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useActiveAccount } from 'thirdweb/react';
 
 export const getProgressBoost = (
   trait: keyof PlayerTraits,
@@ -494,8 +495,55 @@ export const TeamPlayer = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl">Training History</h2>
-            <p>Coming soon!</p>
+            <h2 className="text-2xl mb-2">Training History</h2>
+            <div className="overflow-x-auto max-h-96">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Type
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Start Date
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      End Date
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {trainings.reverse().map(({ mode, startDate, endDate }) => {
+                    const trainingMode = TRAINING_MODE_MAP[mode];
+                    return (
+                      <tr key={startDate}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-gray-900">
+                            {trainingMode.label} {trainingMode.emoji}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {format(new Date(startDate), 'dd/MM/yyyy HH:mm')}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-gray-900">
+                            {format(new Date(endDate), 'dd/MM/yyyy HH:mm')}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
