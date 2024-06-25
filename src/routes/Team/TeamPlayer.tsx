@@ -216,7 +216,7 @@ export const TeamPlayer = () => {
   const isLastTrainingEnded = lastTraining?.endDate
     ? new Date(lastTraining?.endDate).getTime() <= Date.now()
     : true;
-
+  console.log(lastTraining, isLastTrainingEnded);
   const traitsArr = Object.entries(traits).filter(([key]) => key !== '_id');
   const trainingDisabled =
     !isLastTrainingEnded || account?.address !== address || traits.stamina < 50;
@@ -521,26 +521,28 @@ export const TeamPlayer = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {trainings.reverse().map(({ mode, startDate, endDate }) => {
-                    const trainingMode = TRAINING_MODE_MAP[mode];
-                    return (
-                      <tr key={startDate}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-gray-900">
-                            {trainingMode.label} {trainingMode.emoji}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {format(new Date(startDate), 'dd/MM/yyyy HH:mm')}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-gray-900">
-                            {format(new Date(endDate), 'dd/MM/yyyy HH:mm')}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {[...trainings]
+                    .reverse()
+                    .map(({ mode, startDate, endDate }) => {
+                      const trainingMode = TRAINING_MODE_MAP[mode];
+                      return (
+                        <tr key={startDate}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-gray-900">
+                              {trainingMode.label} {trainingMode.emoji}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {format(new Date(startDate), 'dd/MM/yyyy HH:mm')}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-gray-900">
+                              {format(new Date(endDate), 'dd/MM/yyyy HH:mm')}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>
