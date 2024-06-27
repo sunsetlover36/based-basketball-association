@@ -10,7 +10,7 @@ import { thirdwebClient } from '@/lib/thirdweb';
 import { doLogin, doLogout, getLoginPayload, isLoggedIn } from '@/lib/api';
 import { Button } from '@/components';
 import { queryClient } from '@/lib/queryClient';
-import { APP_THIRDWEB_CHAIN } from '@/lib/utils';
+import { ACCOUNT_FACTORY_ADDRESS, APP_THIRDWEB_CHAIN } from '@/lib/utils';
 
 const wallets = [
   createWallet('com.coinbase.wallet'),
@@ -39,7 +39,7 @@ export const ConnectButton = () => {
           accountAbstraction={{
             chain: APP_THIRDWEB_CHAIN,
             sponsorGas: true,
-            factoryAddress: '0x3e2bC5fBB09D698447e0cF70Fa2e42Ba56bCC5eB',
+            factoryAddress: ACCOUNT_FACTORY_ADDRESS,
           }}
           wallets={wallets}
           theme={lightTheme({

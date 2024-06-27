@@ -11,6 +11,10 @@ export const IS_DEV = import.meta.env.VITE_VERCEL_ENV === 'development';
 
 export const APP_THIRDWEB_CHAIN = IS_PROD ? twBase : twBaseSepolia;
 export const APP_VIEM_CHAIN = IS_PROD ? base : baseSepolia;
+
+export const ACCOUNT_FACTORY_ADDRESS = import.meta.env
+  .VITE_ACCOUNT_FACTORY_ADDRESS;
+
 export const isValidChain = (chainId?: number) =>
   chainId === APP_THIRDWEB_CHAIN.id;
 
