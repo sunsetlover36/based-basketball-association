@@ -11,6 +11,7 @@ import { Button, Loader, Progress } from '@/components';
 import {
   cn,
   formatToDuration,
+  MILLISECONDS_IN_HOUR,
   TRAINING_MODE_MAP,
   TRAITS_MAP,
 } from '@/lib/utils';
@@ -19,6 +20,7 @@ import { DialogName } from '@/store/ui/types';
 import { cheerPlayer, getBoost } from '@/lib/api';
 import { queryClient, useTeam, useUser } from '@/lib/queryClient';
 import { Player } from './Players';
+import { useLocalStorage } from 'react-use';
 
 export const getProgressBoost = (
   trait: keyof PlayerTraits,
@@ -83,6 +85,11 @@ export const TeamPlayer = () => {
   const [isBoosting, setIsBoosting] = useState(false);
   const [showPoints, setShowPoints] = useState(false);
   const [isCheered, setIsCheered] = useState(false);
+  const [playerChat, setPlayerChat] = useState('');
+  const [lsChatShownDate, setLsChatShownDate] = useLocalStorage(
+    'chatShownDate',
+    ''
+  );
 
   const player = useMemo(() => {
     return team?.players[Number(playerIndex) - 1];
@@ -139,6 +146,24 @@ export const TeamPlayer = () => {
     });
   };
 
+  useEffect(() => {
+    const chatShownDate =
+      lsChatShownDate && new Date(+lsChatShownDate).getTime();
+
+    if (
+      (!chatShownDate || chatShownDate + MILLISECONDS_IN_HOUR < Date.now()) &&
+      account?.address === address
+    ) {
+      setTimeout(() => {
+        setPlayerChat('Hey there, coach!');
+        setLsChatShownDate(Date.now().toString());
+      }, 250);
+
+      setTimeout(() => {
+        setPlayerChat('');
+      }, 5000);
+    }
+  }, [account?.address, lsChatShownDate, address]);
   useEffect(() => {
     let trainingCheckInterval: NodeJS.Timeout | null = null;
     const lastTraining = player?.trainings[player?.trainings.length - 1];
@@ -242,7 +267,7 @@ export const TeamPlayer = () => {
         </div>
         <div>
           <div className="flex mb-4">
-            <Player player={player} />
+            <Player chat={playerChat} player={player} />
             <div className="w-2/3">
               <div className="grid grid-cols-3 gap-y-2 gap-x-8 mb-6">
                 {traitsArr

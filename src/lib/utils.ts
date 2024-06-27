@@ -6,6 +6,8 @@ import { base, baseSepolia } from 'viem/chains';
 
 import { PlayerTraits, PlayerSpecialTrait, PlayerTrainingMode } from '@/types';
 
+export const MILLISECONDS_IN_HOUR = 60 * 60 * 1000;
+
 export const IS_PROD = import.meta.env.VITE_VERCEL_ENV === 'production';
 export const IS_DEV = import.meta.env.VITE_VERCEL_ENV === 'development';
 
