@@ -7,9 +7,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 interface PlayerProps {
   player: IPlayer;
+  chat?: string;
   onClick?: () => void;
 }
-export const Player: FC<PlayerProps> = ({ player, onClick }) => {
+export const Player: FC<PlayerProps> = ({ player, chat, onClick }) => {
   const { fullName, number, country, nickname } = player;
 
   return (
@@ -20,11 +21,21 @@ export const Player: FC<PlayerProps> = ({ player, onClick }) => {
       )}
       onClick={onClick}
     >
-      <img
-        className="w-full rounded-lg mb-4"
-        src="/unrevealed.gif"
-        alt={fullName}
-      />
+      <div className="relative">
+        <img
+          className="w-full rounded-lg mb-4"
+          src="/unrevealed.gif"
+          alt={fullName}
+        />
+        <div
+          className={cn(
+            'absolute left-1/2 -translate-x-1/2 bottom-2 bg-white rounded-lg border-2 border-blue-600 px-2 whitespace-nowrap transition-opacity',
+            chat ? 'opacity-100' : 'opacity-0'
+          )}
+        >
+          {chat}
+        </div>
+      </div>
 
       <p className="text-lg font-bold text-center leading-4">{fullName}</p>
       {nickname && (
