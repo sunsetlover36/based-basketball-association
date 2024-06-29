@@ -17,6 +17,7 @@ const getLeaderboardMedal = (rank: number) => {
 export const Leaderboard = () => {
   const navigate = useNavigate();
   const account = useActiveAccount();
+  const accountAddress = account?.address ? account.address.toLowerCase() : '';
   const { data: leaderboard, isLoading, error } = useLeaderboard();
 
   if (isLoading) {
@@ -40,7 +41,7 @@ export const Leaderboard = () => {
   }
 
   const leaderboardIndex = leaderboard.findIndex(
-    (user) => user.address === account?.address
+    (user) => user.address === accountAddress
   );
   const leaderboardUser = leaderboard[leaderboardIndex];
   return (
@@ -89,16 +90,16 @@ export const Leaderboard = () => {
                     <div
                       className={cn(
                         'text-gray-900 transition-colors',
-                        address !== account?.address &&
+                        address !== accountAddress &&
                           'cursor-pointer hover:text-blue-600'
                       )}
                       onClick={() => {
-                        if (address !== account?.address) {
+                        if (address !== accountAddress) {
                           navigate(`/${address}/team`);
                         }
                       }}
                     >
-                      {address === account?.address
+                      {address === accountAddress
                         ? 'You'
                         : shortenAddress(address)}
                     </div>
@@ -117,7 +118,7 @@ export const Leaderboard = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-gray-900">
-                    {leaderboardUser?.address === account?.address
+                    {leaderboardUser?.address === accountAddress
                       ? 'You'
                       : shortenAddress(account!.address)}
                   </div>

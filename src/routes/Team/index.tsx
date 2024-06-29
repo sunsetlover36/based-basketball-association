@@ -16,6 +16,8 @@ export const Team = () => {
   const { data: team, error, isLoading } = useTeam(address);
   const { toggle: toggleEditLogo } = useDialog(DialogName.EDIT_LOGO_DIALOG);
 
+  const isTeamOwner =
+    account?.address && account.address.toLowerCase() === address;
   if (isLoading) {
     return <Loader size={100} className="mx-auto" />;
   }
@@ -27,7 +29,7 @@ export const Team = () => {
     return <Navigate to="/" />;
   }
   if (!team) {
-    if (account?.address === address) {
+    if (isTeamOwner) {
       toast('Please create a team first!', {
         id: 'create-team',
         icon: '🚀',
@@ -43,7 +45,6 @@ export const Team = () => {
   }
 
   const { logo, name, points } = team;
-  const isTeamOwner = account?.address === address;
   return (
     <motion.div
       initial={{ opacity: 0 }}
