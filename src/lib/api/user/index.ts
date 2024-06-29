@@ -11,6 +11,7 @@ import {
   CheerPlayerData,
   TrainPlayerData,
   EditTeamLogoData,
+  CreateTeamResponse,
 } from './types';
 import { APP_THIRDWEB_CHAIN } from '@/lib/utils';
 
@@ -66,15 +67,18 @@ export const checkTeamName = async (name: string): Promise<boolean> => {
     .json<boolean>();
   return data;
 };
-export const createTeam = async (data: CreateTeamData) => {
+export const createTeam = async (data: CreateTeamData): Promise<string> => {
   const formData = new FormData();
   for (const [key, value] of Object.entries(data)) {
     formData.append(key, value);
   }
 
-  await api.post(userUrls.CREATE_TEAM, {
-    body: formData,
-  });
+  const { queueId } = await api
+    .post(userUrls.CREATE_TEAM, {
+      body: formData,
+    })
+    .json<CreateTeamResponse>();
+  return queueId;
 };
 export const trainPlayer = async (data: TrainPlayerData) => {
   await api.post(userUrls.TRAIN_PLAYER, {

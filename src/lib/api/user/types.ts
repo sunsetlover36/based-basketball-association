@@ -8,6 +8,9 @@ export interface CreateTeamData {
   playerCountry: string;
   playerNickname: string;
 }
+export interface CreateTeamResponse {
+  queueId: string;
+}
 
 export interface TrainPlayerData {
   playerId: string;

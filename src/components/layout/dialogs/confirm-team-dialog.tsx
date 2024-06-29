@@ -10,50 +10,34 @@ import { claimTo } from 'thirdweb/extensions/erc721';
 
 import { useDialog, useStore } from '@/store';
 import { Modal, Button, Loader } from '@/components';
-import { queryClient } from '@/lib/queryClient';
+import { queryClient, useTxStatus } from '@/lib/queryClient';
 import { DialogName } from '@/store/ui/types';
-import { teamsContract, twTeamsContract } from '@/lib/contracts';
+import { twTeamsContract } from '@/lib/contracts';
 import { checkTeamName, createTeam, shareSocials } from '@/lib/api';
-import { prepareContractCall, sendTransaction } from 'thirdweb';
+import { prepareContractCall } from 'thirdweb';
 
+// TODO: Make server URL constant (through Railway)
 export const ConfirmTeamDialog = () => {
   const account = useActiveAccount();
   const { isOpen, toggle } = useDialog(DialogName.CONFIRM_TEAM_DIALOG);
   const { teamData, setTeamData, toggleConfetti } = useStore();
 
-  const { writeContractAsync } = useWriteContract();
-
   const [isLoading, setIsLoading] = useState(false);
-  const [createTx, setCreateTx] = useState<`0x${string}` | undefined>();
-  const createTxReceipt = useWaitForTransactionReceipt({
-    hash: createTx,
-  });
   const [isTeamCreated, setIsTeamCreated] = useState(false);
   const [teamName, setTeamName] = useState<string>('');
   const [isShared, setIsShared] = useState(false);
 
+  const [queueId, setQueueId] = useState<string | null>(null);
+  const { data: txData } = useTxStatus(queueId);
+
   const onCreateTeam = async () => {
     setIsLoading(true);
-
     try {
       const isTeamExists = await checkTeamName(teamData!.teamName);
 
       if (!isTeamExists) {
-        try {
-          const txHash = await writeContractAsync({
-            ...teamsContract,
-            functionName: 'createTeamFCFS',
-            args: [teamData!.teamName],
-          });
-          setCreateTx(txHash);
-        } catch (err) {
-          const msg = (err as BaseError).shortMessage.replace(
-            `The contract function "createTeamFCFS" reverted with the following reason:\n`,
-            ''
-          );
-          toast.error(msg, { id: 'error-creation-tx', icon: '❌' });
-          setIsLoading(false);
-        }
+        const creationQueueId = await createTeam(teamData!);
+        setQueueId(creationQueueId);
       } else {
         toast.error('Team already exists!', {
           id: 'error-creation-tx',
@@ -71,7 +55,6 @@ export const ConfirmTeamDialog = () => {
   };
   const processCreationTx = async () => {
     try {
-      await createTeam(teamData!);
       setTeamName(teamData!.teamName);
 
       await queryClient.invalidateQueries({
@@ -118,25 +101,14 @@ export const ConfirmTeamDialog = () => {
   };
 
   useEffect(() => {
+    console.log('txData', txData);
+  }, [txData]);
+  useEffect(() => {
     if (!isOpen) {
       setIsTeamCreated(false);
       setTeamData(null);
     }
   }, [isOpen]);
-  useEffect(() => {
-    if (createTxReceipt.data && createTxReceipt.data.status === 'success') {
-      const { status } = createTxReceipt.data;
-      if (status === 'success') {
-        processCreationTx();
-      } else {
-        toast.error('Something went wrong with transaction!', {
-          id: 'tx-error',
-          icon: '❌',
-        });
-        setIsLoading(false);
-      }
-    }
-  }, [createTxReceipt.data]);
 
   if (!account) {
     toggle(false);

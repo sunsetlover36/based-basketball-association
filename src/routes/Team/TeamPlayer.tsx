@@ -91,6 +91,8 @@ export const TeamPlayer = () => {
     ''
   );
 
+  const accountAddress = account?.address ? account.address.toLowerCase() : '';
+
   const player = useMemo(() => {
     return team?.players[Number(playerIndex) - 1];
   }, [team, playerIndex]);
@@ -152,7 +154,7 @@ export const TeamPlayer = () => {
 
     if (
       (!chatShownDate || chatShownDate + MILLISECONDS_IN_HOUR < Date.now()) &&
-      account?.address === address
+      accountAddress === address
     ) {
       setTimeout(() => {
         setPlayerChat('Hey there, coach!');
@@ -163,7 +165,7 @@ export const TeamPlayer = () => {
         setPlayerChat('');
       }, 5000);
     }
-  }, [account?.address, lsChatShownDate, address]);
+  }, [accountAddress, lsChatShownDate, address]);
   useEffect(() => {
     let trainingCheckInterval: NodeJS.Timeout | null = null;
     const lastTraining = player?.trainings[player?.trainings.length - 1];
@@ -243,7 +245,7 @@ export const TeamPlayer = () => {
 
   const traitsArr = Object.entries(traits).filter(([key]) => key !== '_id');
   const trainingDisabled =
-    !isLastTrainingEnded || account?.address !== address || traits.stamina < 50;
+    !isLastTrainingEnded || accountAddress !== address || traits.stamina < 50;
   const formattedDuration = formatToDuration(
     new Date().toISOString(),
     lastTraining?.endDate
@@ -380,7 +382,7 @@ export const TeamPlayer = () => {
               </div>
               {(lastTraining && !isLastTrainingEnded
                 ? true
-                : account?.address === address) && (
+                : accountAddress === address) && (
                 <div>
                   <h3 className="text-xl -mb-1">Fans</h3>
                   {lastTraining && !isLastTrainingEnded ? (
@@ -388,11 +390,11 @@ export const TeamPlayer = () => {
                       <p className="text-blue-600 text-3xl">
                         {lastTraining.fans.length}
                       </p>
-                      {account?.address !== address && address && (
+                      {accountAddress !== address && address && (
                         <div className="relative">
                           {user?.team &&
-                            account?.address &&
-                            !lastTraining.fans.includes(account?.address) &&
+                            accountAddress &&
+                            !lastTraining.fans.includes(accountAddress) &&
                             !isCheered && (
                               <Button
                                 data-tooltip-id="cheer"
@@ -430,7 +432,7 @@ export const TeamPlayer = () => {
                     ].label
                   }.`
                 : `No training session is set for this player.${
-                    account?.address === address ? ' You can set one.' : ''
+                    accountAddress === address ? ' You can set one.' : ''
                   }`}
               {traits.stamina < 50 &&
                 isLastTrainingEnded &&
@@ -493,7 +495,7 @@ export const TeamPlayer = () => {
               </p>
             )}
 
-            {address === account?.address && hasBoosts && (
+            {address === accountAddress && hasBoosts && (
               <div className="mt-4">
                 <h2 className="text-2xl mb-1">Secret Menu</h2>
                 <div className="flex gap-x-2">

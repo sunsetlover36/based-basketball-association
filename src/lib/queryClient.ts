@@ -1,6 +1,12 @@
 import { QueryClient, useQuery } from '@tanstack/react-query';
 
-import { getLeaderboard, getTeam, getUser, hasTeam } from '@/lib/api';
+import {
+  getLeaderboard,
+  getTeam,
+  getTxStatus,
+  getUser,
+  hasTeam,
+} from '@/lib/api';
 
 export const queryClient = new QueryClient();
 
@@ -29,4 +35,12 @@ export const useHasTeam = (address?: string) =>
     queryKey: ['hasTeam', address],
     queryFn: () => hasTeam(address!),
     enabled: !!address,
+  });
+
+export const useTxStatus = (queueId?: string | null) =>
+  useQuery({
+    queryKey: ['txStatus', queueId],
+    queryFn: () => getTxStatus(queueId!),
+    enabled: !!queueId,
+    refetchInterval: 2000,
   });

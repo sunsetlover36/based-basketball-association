@@ -66,6 +66,7 @@ export interface User {
   referralCode: string;
   hasReceivedPointsForShare?: boolean;
   boosts: UserBoost[];
+  inviteCode?: string;
 }
 
 export type Leaderboard = Array<{ address: string; points: number }>;
