@@ -5,7 +5,7 @@ import { thirdwebClient } from '@/lib/thirdweb';
 
 const address = (
   IS_PROD
-    ? '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+    ? '0x620f4738A465498Cd0746355EA37DF6440860D2D'
     : '0xd50634BC21f34b3E5C5831f5898Ad456e900f28B'
 ) as `0x${string}`;
 export const teamsContract = {
