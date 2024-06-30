@@ -63,6 +63,7 @@ export interface UserBoost {
 export interface User {
   joinedAt: Date;
   address: string;
+  smartAccountAddress: string;
   team: Team;
   points: number;
   referralCode: string;

@@ -1,9 +1,8 @@
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useActiveAccount } from 'thirdweb/react';
 
-import { useLeaderboard } from '@/lib/queryClient';
+import { useLeaderboard, useUser } from '@/lib/queryClient';
 import { cn, shortenAddress } from '@/lib/utils';
 import { Loader } from '@/components';
 
@@ -16,11 +15,14 @@ const getLeaderboardMedal = (rank: number) => {
 
 export const Leaderboard = () => {
   const navigate = useNavigate();
-  const account = useActiveAccount();
-  const accountAddress = account?.address ? account.address.toLowerCase() : '';
-  const { data: leaderboard, isLoading, error } = useLeaderboard();
+  const { data: user, isLoading: isUserLoading } = useUser();
+  const {
+    data: leaderboard,
+    isLoading: isLeaderboardLoading,
+    error,
+  } = useLeaderboard();
 
-  if (isLoading) {
+  if (isLeaderboardLoading || isUserLoading) {
     return <Loader size={100} className="mx-auto" />;
   }
 
@@ -41,9 +43,10 @@ export const Leaderboard = () => {
   }
 
   const leaderboardIndex = leaderboard.findIndex(
-    (user) => user.address === accountAddress
+    (lUser) => lUser.address === user?.address
   );
-  const leaderboardUser = leaderboard[leaderboardIndex];
+  const leaderboardUser =
+    leaderboardIndex !== -1 ? leaderboard[leaderboardIndex] : null;
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -90,16 +93,16 @@ export const Leaderboard = () => {
                     <div
                       className={cn(
                         'text-gray-900 transition-colors',
-                        address !== accountAddress &&
+                        address !== user?.address &&
                           'cursor-pointer hover:text-blue-600'
                       )}
                       onClick={() => {
-                        if (address !== accountAddress) {
+                        if (address !== user?.address) {
                           navigate(`/${address}/team`);
                         }
                       }}
                     >
-                      {address === accountAddress
+                      {address === user?.address
                         ? 'You'
                         : shortenAddress(address)}
                     </div>
@@ -109,26 +112,24 @@ export const Leaderboard = () => {
                   </td>
                 </tr>
               ))}
-              <tr className="bg-blue-200 outline outline-2 outline-blue-600">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-gray-900">
-                    {getLeaderboardMedal(leaderboardIndex + 1)}{' '}
-                    {leaderboardIndex + 1}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-gray-900">
-                    {leaderboardUser?.address === accountAddress
-                      ? 'You'
-                      : shortenAddress(account!.address)}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-gray-900">
-                    {leaderboardUser?.points ? leaderboardUser.points : 0}
-                  </div>
-                </td>
-              </tr>
+              {leaderboardUser && (
+                <tr className="bg-blue-200 outline outline-2 outline-blue-600">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-gray-900">
+                      {getLeaderboardMedal(leaderboardIndex + 1)}{' '}
+                      {leaderboardIndex + 1}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-gray-900">You</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-gray-900">
+                      {leaderboardUser?.points ? leaderboardUser.points : 0}
+                    </div>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

@@ -2,23 +2,21 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { Navigate, useParams } from 'react-router-dom';
 
-import { useTeam } from '@/lib/queryClient';
+import { useTeam, useUser } from '@/lib/queryClient';
 import { Players } from './Players';
 import { Loader } from '@/components';
-import { useActiveAccount } from 'thirdweb/react';
 import { DialogName } from '@/store/ui/types';
 import { useDialog } from '@/store';
 import { cn } from '@/lib/utils';
 
 export const Team = () => {
-  const account = useActiveAccount();
   const { address } = useParams();
-  const { data: team, error, isLoading } = useTeam(address);
+  const { data: user, isLoading: isUserLoading } = useUser();
+  const { data: team, error, isLoading: isTeamLoading } = useTeam(address);
   const { toggle: toggleEditLogo } = useDialog(DialogName.EDIT_LOGO_DIALOG);
 
-  const isTeamOwner =
-    account?.address && account.address.toLowerCase() === address;
-  if (isLoading) {
+  const isTeamOwner = user?.address === address;
+  if (isTeamLoading || isUserLoading) {
     return <Loader size={100} className="mx-auto" />;
   }
   if (error) {
