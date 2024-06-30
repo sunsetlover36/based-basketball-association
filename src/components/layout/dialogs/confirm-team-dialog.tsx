@@ -1,22 +1,15 @@
 import { useEffect, useState } from 'react';
-import {
-  type BaseError,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
 import toast from 'react-hot-toast';
+import { prepareContractCall } from 'thirdweb';
 import { TransactionButton, useActiveAccount } from 'thirdweb/react';
-import { claimTo } from 'thirdweb/extensions/erc721';
 
 import { useDialog, useStore } from '@/store';
 import { Modal, Button, Loader } from '@/components';
-import { queryClient, useTxStatus } from '@/lib/queryClient';
+import { queryClient } from '@/lib/queryClient';
 import { DialogName } from '@/store/ui/types';
 import { twTeamsContract } from '@/lib/contracts';
-import { checkTeamName, createTeam, shareSocials } from '@/lib/api';
-import { prepareContractCall } from 'thirdweb';
+import { requestTeam, shareSocials } from '@/lib/api';
 
-// TODO: Make server URL constant (through Railway)
 export const ConfirmTeamDialog = () => {
   const account = useActiveAccount();
   const { isOpen, toggle } = useDialog(DialogName.CONFIRM_TEAM_DIALOG);
@@ -27,34 +20,9 @@ export const ConfirmTeamDialog = () => {
   const [teamName, setTeamName] = useState<string>('');
   const [isShared, setIsShared] = useState(false);
 
-  const [queueId, setQueueId] = useState<string | null>(null);
-  const { data: txData } = useTxStatus(queueId);
-
-  const onCreateTeam = async () => {
-    setIsLoading(true);
-    try {
-      const isTeamExists = await checkTeamName(teamData!.teamName);
-
-      if (!isTeamExists) {
-        const creationQueueId = await createTeam(teamData!);
-        setQueueId(creationQueueId);
-      } else {
-        toast.error('Team already exists!', {
-          id: 'error-creation-tx',
-          icon: '❌',
-        });
-      }
-    } catch {
-      toast.error('Something went wrong!', {
-        id: 'error-creation-tx',
-        icon: '❌',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
   const processCreationTx = async () => {
     try {
+      await requestTeam(teamData!);
       setTeamName(teamData!.teamName);
 
       await queryClient.invalidateQueries({
@@ -75,7 +43,7 @@ export const ConfirmTeamDialog = () => {
         toggleConfetti(false);
       }, 10000);
 
-      toast.success('Team created!', { id: 'team-created', icon: '🎮' });
+      toast.success('Team created!', { id: 'team-creation-tx', icon: '🎮' });
     } catch (err) {
       console.error(err);
     } finally {
@@ -100,9 +68,6 @@ export const ConfirmTeamDialog = () => {
     await shareSocials();
   };
 
-  useEffect(() => {
-    console.log('txData', txData);
-  }, [txData]);
   useEffect(() => {
     if (!isOpen) {
       setIsTeamCreated(false);
@@ -184,36 +149,38 @@ export const ConfirmTeamDialog = () => {
       fixedButton
       buttons={
         !isTeamCreated && (
-          <>
-            <Button
-              className="ml-4"
-              disabled={isLoading}
-              onClick={onCreateTeam}
-            >
-              Create
-            </Button>
-            <TransactionButton
-              transaction={async () => {
-                const tx = prepareContractCall({
-                  contract: twTeamsContract,
-                  method: 'function createTeamFCFS(string _teamName)',
-                  params: [teamData!.teamName],
-                });
-                return tx;
-              }}
-              onTransactionSent={(result) => {
-                console.log('Transaction submitted', result.transactionHash);
-              }}
-              onTransactionConfirmed={(receipt) => {
-                console.log('Transaction confirmed', receipt.transactionHash);
-              }}
-              onError={(error) => {
-                console.error('Transaction error', error);
-              }}
-            >
-              Create (Abstraction)
-            </TransactionButton>
-          </>
+          <TransactionButton
+            className="!p-0 !min-w-fit !ml-4"
+            disabled={isLoading}
+            transaction={() =>
+              prepareContractCall({
+                contract: twTeamsContract,
+                method: 'function createTeamFCFS(string teamName)',
+                params: [teamData!.teamName],
+              })
+            }
+            onTransactionSent={() => {
+              toast.success('Transaction sent', {
+                icon: '📩',
+                id: 'team-creation-tx',
+              });
+            }}
+            onTransactionConfirmed={() => {
+              toast.success('Transaction confirmed', {
+                icon: '✅',
+                id: 'team-creation-tx',
+              });
+              processCreationTx();
+            }}
+            onError={(error) => {
+              setIsLoading(false);
+              toast.error(error.message, {
+                icon: '❌',
+              });
+            }}
+          >
+            <Button className="h-full">Create</Button>
+          </TransactionButton>
         )
       }
     >

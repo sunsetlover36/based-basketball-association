@@ -4,7 +4,7 @@ export const userUrls = {
   IS_LOGGED_IN: 'user/is-logged-in',
   USER: 'user/data',
   TEAM: 'user/team',
-  CREATE_TEAM: 'user/create-team',
+  REQUEST_TEAM: 'user/request-team',
   TRAIN_PLAYER: 'user/train-player',
   CHEER_PLAYER: 'user/cheer-player',
   LEADERBOARD: 'user/leaderboard',

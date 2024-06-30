@@ -85,7 +85,7 @@ export const Modal: FC<ModalProps> = ({
           </div>
           <div
             className={cn(
-              'flex justify-end items-center mx-4 mb-4',
+              'flex justify-end mx-4 mb-4',
               fixedButton && 'sticky bottom-4 right-4'
             )}
           >

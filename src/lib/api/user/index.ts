@@ -7,11 +7,10 @@ import { type Leaderboard, type Team, type User } from '@/types';
 import { api } from '../api';
 import { userUrls } from './urls';
 import {
-  CreateTeamData,
+  RequestTeamData,
   CheerPlayerData,
   TrainPlayerData,
   EditTeamLogoData,
-  CreateTeamResponse,
 } from './types';
 import { APP_THIRDWEB_CHAIN } from '@/lib/utils';
 
@@ -67,18 +66,15 @@ export const checkTeamName = async (name: string): Promise<boolean> => {
     .json<boolean>();
   return data;
 };
-export const createTeam = async (data: CreateTeamData): Promise<string> => {
+export const requestTeam = async (data: RequestTeamData) => {
   const formData = new FormData();
   for (const [key, value] of Object.entries(data)) {
     formData.append(key, value);
   }
 
-  const { queueId } = await api
-    .post(userUrls.CREATE_TEAM, {
-      body: formData,
-    })
-    .json<CreateTeamResponse>();
-  return queueId;
+  await api.post(userUrls.REQUEST_TEAM, {
+    body: formData,
+  });
 };
 export const trainPlayer = async (data: TrainPlayerData) => {
   await api.post(userUrls.TRAIN_PLAYER, {

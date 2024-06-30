@@ -51,6 +51,7 @@ export interface Player {
 }
 export interface Team {
   _id: string;
+  createdAt: Date;
   name: string;
   logo: string;
   players: Player[];
@@ -60,6 +61,7 @@ export interface UserBoost {
   claimed: boolean;
 }
 export interface User {
+  joinedAt: Date;
   address: string;
   team: Team;
   points: number;

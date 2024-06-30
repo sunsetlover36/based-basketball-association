@@ -1,15 +1,12 @@
 import { PlayerTrainingMode } from '@/types';
 
-export interface CreateTeamData {
+export interface RequestTeamData {
   teamName: string;
   teamLogo: File;
   playerFullName: string;
   playerNumber: string;
   playerCountry: string;
   playerNickname: string;
-}
-export interface CreateTeamResponse {
-  queueId: string;
 }
 
 export interface TrainPlayerData {

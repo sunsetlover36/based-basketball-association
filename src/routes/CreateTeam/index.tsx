@@ -21,6 +21,7 @@ import { teamsContract } from '@/lib/contracts';
 import { CreateTeamPhase } from '@/types';
 import { useDialog, useStore } from '@/store';
 import { DialogName } from '@/store/ui/types';
+import { checkTeamName } from '@/lib/api';
 
 export const createTeamSchema = z.object({
   teamName: z.string().min(1, { message: 'Team name is required' }).max(24, {
@@ -232,6 +233,16 @@ export const CreateTeam = () => {
         teamLogo: data.teamLogo![0], // Access the first file
         playerCountry: data.playerCountry!.value,
       };
+
+      const isTeamExists = await checkTeamName(data.teamName);
+      if (isTeamExists) {
+        toast.error('Team name already exists', {
+          id: 'create-team-error',
+          icon: '🚨',
+        });
+        return;
+      }
+
       setTeamData(teamData);
       toggleConfirmTeamDialog(true);
     } finally {

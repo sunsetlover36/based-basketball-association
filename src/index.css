@@ -7,6 +7,11 @@
   src: url('/fonts/upheavel.ttf');
 }
 
+.css-bsgets span {
+  display: block;
+  height: 100%;
+}
+
 @layer base {
   :root {
     font-family: 'Upheavel', system-ui, Avenir, Helvetica, Arial, sans-serif;
