@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Avatar, Name, Badge, Identity } from '@coinbase/onchainkit/identity';
 
 import { useLeaderboard, useUser } from '@/lib/queryClient';
-import { cn, shortenAddress } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Loader } from '@/components';
 
 const getLeaderboardMedal = (rank: number) => {
@@ -102,9 +103,19 @@ export const Leaderboard = () => {
                         }
                       }}
                     >
-                      {address === user?.address
-                        ? 'You'
-                        : shortenAddress(address)}
+                      <Identity
+                        address={address as `0x${string}`}
+                        schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
+                      >
+                        <Avatar className="w-6 h-6 mr-3" />
+                        <Name
+                          className={
+                            user?.address === address ? 'text-blue-600' : ''
+                          }
+                        >
+                          <Badge />
+                        </Name>
+                      </Identity>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -121,7 +132,15 @@ export const Leaderboard = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-gray-900">You</div>
+                    <Identity
+                      address={leaderboardUser.address as `0x${string}`}
+                      schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
+                    >
+                      <Avatar className="w-6 h-6 mr-3" />
+                      <Name className="text-blue-600">
+                        <Badge />
+                      </Name>
+                    </Identity>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-gray-900">
