@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Upheavel';
-  src: url('/fonts/upheavel.ttf');
+  font-family: 'Retro Gaming';
+  src: url('/fonts/retro-gaming.ttf');
 }
 
 .css-bsgets span {
@@ -14,7 +14,9 @@
 
 @layer base {
   :root {
-    font-family: 'Upheavel', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: 'Retro Gaming', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    background-color: black;
+    color: white;
     line-height: 1.5;
     font-weight: 400;
 

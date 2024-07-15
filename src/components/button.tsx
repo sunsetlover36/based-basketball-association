@@ -43,7 +43,7 @@ export const Button: FC<ButtonProps> = ({
         'text-base md:text-lg focus:outline-none rounded-md shadow-sm shadow-gray-600 transition-all duration-100',
         isMouseDown ? 'translate-y-0.5' : 'translate-y-0',
         variant === 'primary' &&
-          'bg-blue-600 text-white px-4 py-1 hover:bg-blue-700',
+          'bg-white text-black px-4 py-1 hover:bg-gray-300',
         variant === 'muted' &&
           'inline-flex justify-center border-2 border-gray-300 shadow-sm px-4 py-1 bg-white text-base text-gray-700 hover:bg-gray-300 focus:outline-none',
         variant === 'ghost' &&

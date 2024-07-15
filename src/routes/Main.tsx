@@ -1,115 +1,74 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
-import { useDialog } from '@/store';
-import { Button } from '@/components';
-import { useActiveAccount } from 'thirdweb/react';
-import { DialogName } from '@/store/ui/types';
-import { useHasTeam, useUser } from '@/lib/queryClient';
-import toast from 'react-hot-toast';
+import { Button, Input } from '@/components';
 
 export const Main = () => {
-  const navigate = useNavigate();
-  const { toggle: toggleTeamDialog } = useDialog(DialogName.TEAM_DIALOG);
-  const { toggle: toggleTraitsDialog } = useDialog(DialogName.TRAITS_DIALOG);
+  const [text, setText] = useState('stars are emerging');
 
-  const [currentPlayer, setCurrentPlayer] = useState(0);
-
-  const account = useActiveAccount();
-  const { data: user } = useUser();
-  const { data: hasTeam } = useHasTeam(account?.address);
+  const texts = [
+    'stars are emerging',
+    'unleash the champion',
+    'your legacy begins now',
+    'from rookie to legend',
+    'the court awaits',
+    'dominate the league',
+    'make history',
+  ];
+  let index = 0;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentPlayer((currentPlayer) => (currentPlayer + 1) % 7);
-    }, 1000);
+      index = (index + 1) % texts.length;
+      setText(texts[index]);
+    }, 4000); // меняем текст каждые 2 секунды
 
     return () => clearInterval(interval);
   }, []);
 
-  const paragraphClassName =
-    'text-sm sm:text-base lg:text-lg 2xl:text-xl w-[90%] sm:w-[75%] lg:w-[60%] 2xl:w-[50%] mx-auto mt-2 !leading-5 2xl:!leading-7';
-
-  const isTeamVisible = hasTeam && user && account;
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <div className="text-center uppercase">
-        <img
-          src={`/player${currentPlayer}.gif`}
-          className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 2xl:w-auto 2xl:h-80 mx-auto mb-2"
-        />
-        <h1 className="px-8 leading-6 text-2xl sm:text-3xl md:text-4xl 2xl:text-6xl text-blue-600">
-          Based Basketball Association
-        </h1>
-        <p className={paragraphClassName}>
-          Based Basketball Association is a basketball coach career simulator.
-        </p>
-        <p className={paragraphClassName}>
-          Every coach will have the opportunity to&nbsp;create{' '}
-          <span className="text-blue-600">1</span>&nbsp;team out of&nbsp;
-          <span className="text-blue-600">3333</span> with their own{' '}
-          <span className="text-blue-600">unique player</span>.
-        </p>
-        <p className={paragraphClassName}>
-          Train your basketball player and get ready for the first season
-          of&nbsp;the game in&nbsp;the association&rsquo;s training camp!
-        </p>
-        <p className={paragraphClassName}>
-          Build your dream team, starting from your hood, to&nbsp;dominate the
-          street courts and then lead your squad to&nbsp;the title of&nbsp;the
-          best team in&nbsp;the world in&nbsp;the thrilling gameplay
-          of&nbsp;Based Basketball.
-        </p>
-      </div>
+    <motion.div
+      transition={{ delay: 2, duration: 2 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="w-full"
+    >
+      {/* <div className="text-center relative w-full flex items-center justify-center h-24"> */}
+      {/* <div className="flex items-center absolute top-1/2 -translate-y-1/2 w-full -z-10">
+          {new Array(7).fill(null).map((_, i) => (
+            <img
+              key={i}
+              src={`/player${i}.gif`}
+              className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 2xl:w-auto 2xl:h-20 mx-auto rounded-xl"
+              style={{
+                transform: `translateY(${i % 2 === 0 ? -100 : 100}px)`,
+              }}
+            />
+          ))}
+        </div> */}
 
-      {!isTeamVisible && (
-        <div className="flex justify-center items-center mt-8">
-          <Button
-            onClick={() =>
-              !account
-                ? toast.error('Please connect wallet first!', {
-                    id: 'sign-in',
-                    icon: '🚨',
-                  })
-                : navigate('/create-team')
-            }
+      {/* <AnimatePresence>
+          <motion.h1
+            key={text}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="absolute w-fit text-3xl sm:text-5xl md:text-6xl 2xl:text-8xl"
           >
-            Create team
-          </Button>
-        </div>
-      )}
-      <div className="flex justify-center items-center mt-4">
-        <Button
-          variant="ghost"
-          onClick={() => window.open('/BBA_Based_Paper.pdf', '_blank')}
-        >
-          Based Paper
-        </Button>
-        <Button
-          variant="ghost"
-          onClick={() => toggleTraitsDialog(true)}
-          className="mx-4"
-        >
-          Traits
-        </Button>
-        <Button variant="ghost" onClick={() => toggleTeamDialog(true)}>
-          Team
-        </Button>
-      </div>
+            {text}
+          </motion.h1>
+        </AnimatePresence> */}
+      {/* </div> */}
 
-      <div className="flex items-center justify-center mt-4">
-        <img
-          src="/x.png"
-          className="w-[29px] rounded-lg mr-4 cursor-pointer"
-          onClick={() => window.open('https://x.com/BasedBBA', '_blank')}
-        />
-        <img
-          src="/warpcast.png"
-          className="w-[36px] cursor-pointer"
-          onClick={() => window.open('https://warpcast.com/basedbba', '_blank')}
-        />
-      </div>
+      {/* <motion.div
+        transition={{ delay: 2, duration: 0.75 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="mt-48 w-full flex flex-col items-center justify-center"
+      >
+        <p className="text-2xl text-center mb-4">Players are ready, Coach.</p>
+      </motion.div> */}
     </motion.div>
   );
 };

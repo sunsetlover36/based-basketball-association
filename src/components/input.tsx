@@ -72,7 +72,7 @@ export const Input: FC<InputProps> = forwardRef((props, ref) => {
         </label>
       )}
       {imgPreview && (
-        <div className="mb-2 border-2 rounded-lg p-2 border-blue-600">
+        <div className="mb-2 border rounded-lg p-2 border-white">
           <img
             src={imgPreview}
             alt="Preview"
@@ -93,7 +93,7 @@ export const Input: FC<InputProps> = forwardRef((props, ref) => {
           ref={ref}
           className={cn(
             type !== 'file' &&
-              'bg-white border-2 border-blue-600 rounded-lg px-2 py-1 w-full focus:ring-1 focus:ring-blue-600 outline-none',
+              'bg-[#ffffff] rounded-lg px-2 py-1 w-full outline-none',
             error && 'border-red-600',
             inputClassName
           )}
