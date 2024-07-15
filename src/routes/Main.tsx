@@ -1,31 +1,6 @@
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-
-import { Button, Input } from '@/components';
+import { motion } from 'framer-motion';
 
 export const Main = () => {
-  const [text, setText] = useState('stars are emerging');
-
-  const texts = [
-    'stars are emerging',
-    'unleash the champion',
-    'your legacy begins now',
-    'from rookie to legend',
-    'the court awaits',
-    'dominate the league',
-    'make history',
-  ];
-  let index = 0;
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      index = (index + 1) % texts.length;
-      setText(texts[index]);
-    }, 4000); // меняем текст каждые 2 секунды
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <motion.div
       transition={{ delay: 2, duration: 2 }}

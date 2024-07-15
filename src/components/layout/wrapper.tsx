@@ -1,38 +1,22 @@
 import { Suspense, useEffect, useState, type FC, type ReactNode } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { useLocation } from 'react-router-dom';
-import Confetti from 'react-confetti';
+import toast from 'react-hot-toast';
 import { useWindowSize } from 'react-use';
-import { Tooltip } from 'react-tooltip';
 import { useActiveWalletChain } from 'thirdweb/react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import {
-  AsciiRenderer,
   Center,
   Environment,
-  Fisheye,
   Float,
   GradientTexture,
   Loader,
-  OrbitControls,
   PresentationControls,
   Sparkles,
-  Stars,
   Text3D,
   useGLTF,
 } from '@react-three/drei';
 import { motion } from 'framer-motion';
 
-import { APP_THIRDWEB_CHAIN, cn, isValidChain } from '@/lib/utils';
-import { useStore } from '@/store';
-
-import {
-  ConfirmTeamDialog,
-  ConfirmTrainingDialog,
-  TeamDialog,
-  TraitsDialog,
-  EditLogoDialog,
-} from './dialogs';
+import { APP_THIRDWEB_CHAIN, isValidChain } from '@/lib/utils';
 
 export const Ball = () => {
   const { nodes, materials } = useGLTF('/ball.glb');
@@ -43,7 +27,7 @@ export const Ball = () => {
     setRotation(t * 0.05);
   });
 
-  const ball = nodes['bbc_ball_body'];
+  const ball = nodes['bbc_ball_body'] as any;
   return (
     <mesh
       receiveShadow
@@ -143,15 +127,8 @@ export const Experience = () => {
 interface WrapperProps {
   children: ReactNode;
 }
-export const Wrapper: FC<WrapperProps> = ({ children }) => {
-  const { pathname } = useLocation();
-  const windowSize = useWindowSize();
+export const Wrapper: FC<WrapperProps> = () => {
   const chainId = useActiveWalletChain()?.id;
-  const { isConfettiVisible } = useStore();
-
-  const isCenteredContent = !['/team', '/leaderboard', '/invite'].some((path) =>
-    pathname.includes(path)
-  );
 
   useEffect(() => {
     if (chainId && !isValidChain(chainId)) {
